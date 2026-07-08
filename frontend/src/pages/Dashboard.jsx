@@ -1,9 +1,12 @@
 import StatCard from "../components/StatCard";
+
 import MapView from "../components/MapView";
 import AnalyticsChart from "../components/AnalyticsChart";
 import AIPrediction from "../components/AIPrediction";
 import LandRecords from "../components/LandRecords";
 import Reports from "../components/Reports";
+
+import { dashboardStats } from "../data/dummyData";
 
 
 function Dashboard(){
@@ -16,31 +19,46 @@ return(
 
 <h1 className="text-4xl font-bold">
 
-Land Intelligence Dashboard
+Smart Land Intelligence Dashboard
 
 </h1>
 
 
 <p className="text-gray-600 mt-3">
 
-AI Based GLIS Analytics Platform
+AI Powered GLIS Analytics Platform
 
 </p>
 
 
 
-<div className="grid grid-cols-3 gap-6 mt-10">
+<div className="grid grid-cols-4 gap-6 mt-10">
 
 
-<StatCard title="Mining Zones" value="342"/>
+{
 
-<StatCard title="Land Records" value="12K"/>
 
-<StatCard title="Development Score" value="87%"/>
+dashboardStats.map((item,index)=>(
+
+
+<StatCard
+
+key={index}
+
+title={item.title}
+
+value={item.value}
+
+/>
+
+
+))
+
+
+}
 
 
 </div>
-
 
 
 
@@ -63,9 +81,12 @@ GIS Monitoring
 
 <AnalyticsChart/>
 
+
 <AIPrediction/>
 
+
 <LandRecords/>
+
 
 <Reports/>
 

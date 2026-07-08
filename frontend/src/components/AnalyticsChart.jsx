@@ -4,7 +4,8 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Cell
 } from "recharts";
 
 
@@ -12,28 +13,33 @@ const data = [
 
   {
     name:"Coal",
-    value:70
+    value:70,
+    color:"#FACC15"
   },
 
   {
     name:"Forest",
-    value:45
+    value:45,
+    color:"#16A34A"
   },
 
   {
     name:"Govt Land",
-    value:90
+    value:90,
+    color:"#2563EB"
   },
 
   {
     name:"Unused",
-    value:30
+    value:30,
+    color:"#94A3B8"
   }
 
 ];
 
 
 function AnalyticsChart(){
+
 
 return (
 
@@ -55,14 +61,38 @@ Land Usage Analytics
 
 <XAxis dataKey="name"/>
 
+
 <YAxis/>
+
 
 <Tooltip/>
 
 
-<Bar 
+<Bar
 dataKey="value"
+radius={[10,10,0,0]}
+>
+
+{
+
+data.map((item,index)=>(
+
+
+<Cell
+
+key={index}
+
+fill={item.color}
+
 />
+
+
+))
+
+}
+
+
+</Bar>
 
 
 </BarChart>

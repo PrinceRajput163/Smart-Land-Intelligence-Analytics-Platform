@@ -6,7 +6,8 @@ BarChart3,
 Database,
 Brain,
 FileText,
-Settings
+Settings,
+Globe
 
 } from "lucide-react";
 
@@ -20,10 +21,16 @@ function Sidebar(){
 
 const menu=[
 
+{
+name:"Home",
+path:"/",
+icon:<Globe/>
+},
+
 
 {
 name:"Dashboard",
-path:"/",
+path:"/dashboard",
 icon:<Home/>
 },
 
