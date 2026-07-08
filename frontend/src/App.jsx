@@ -1,10 +1,9 @@
-import { Routes, Route } from "react-router-dom";
-
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 
-
+import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import GISPage from "./pages/GISPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
@@ -14,57 +13,165 @@ import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 
 
-function App(){
+function App() {
 
 
-return(
-
-<div className="flex">
+  const location = useLocation();
 
 
-<Sidebar/>
+  // Landing page par sidebar/navbar hide
+  const isHome = location.pathname === "/";
 
 
-<div className="flex-1 bg-gray-100 min-h-screen p-10">
+  return (
 
 
-<Navbar/>
+    <>
 
 
-<div className="mt-10">
+      {
 
 
-<Routes>
+        isHome ? (
 
 
-<Route path="/" element={<Dashboard/>}/>
-
-<Route path="/gis" element={<GISPage/>}/>
-
-<Route path="/records" element={<LandRecordsPage/>}/>
-
-<Route path="/analytics" element={<AnalyticsPage/>}/>
-
-<Route path="/ai" element={<AIPredictionPage/>}/>
-
-<Route path="/reports" element={<ReportsPage/>}/>
-
-<Route path="/settings" element={<SettingsPage/>}/>
+          <Routes>
 
 
-</Routes>
+            <Route 
+            
+              path="/" 
+              
+              element={<Home />} 
+              
+            />
 
 
-</div>
+          </Routes>
 
 
-</div>
+        ) : (
 
 
-</div>
+          <div className="flex">
 
 
-)
+
+            <Sidebar />
+
+
+
+            <div className="flex-1 bg-gray-100 min-h-screen p-10">
+
+
+
+              <Navbar />
+
+
+
+              <div className="mt-10">
+
+
+
+                <Routes>
+
+
+
+                  <Route 
+                  
+                    path="/dashboard" 
+                    
+                    element={<Dashboard />} 
+                    
+                  />
+
+
+
+                  <Route 
+                  
+                    path="/gis" 
+                    
+                    element={<GISPage />} 
+                    
+                  />
+
+
+
+                  <Route 
+                  
+                    path="/records" 
+                    
+                    element={<LandRecordsPage />} 
+                    
+                  />
+
+
+
+                  <Route 
+                  
+                    path="/analytics" 
+                    
+                    element={<AnalyticsPage />} 
+                    
+                  />
+
+
+
+                  <Route 
+                  
+                    path="/ai" 
+                    
+                    element={<AIPredictionPage />} 
+                    
+                  />
+
+
+
+                  <Route 
+                  
+                    path="/reports" 
+                    
+                    element={<ReportsPage />} 
+                    
+                  />
+
+
+
+                  <Route 
+                  
+                    path="/settings" 
+                    
+                    element={<SettingsPage />} 
+                    
+                  />
+
+
+
+                </Routes>
+
+
+
+              </div>
+
+
+
+            </div>
+
+
+
+          </div>
+
+
+        )
+
+      }
+
+
+    </>
+
+
+  )
+
 
 }
 
