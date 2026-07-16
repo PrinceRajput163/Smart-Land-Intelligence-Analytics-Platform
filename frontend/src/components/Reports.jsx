@@ -1,377 +1,190 @@
 import {
-
-FileText,
-Download,
-Brain,
-CheckCircle,
-Clock,
-Leaf
-
+  FileText,
+  Download,
+  Brain,
+  CheckCircle,
+  Clock,
+  Leaf
 } from "lucide-react";
-
 
 import { motion } from "framer-motion";
 
+import { reportsData } from "../data/dummyData";
 
+function Reports() {
 
-function Reports(){
+  const getIcon = (title) => {
 
+    if (title.includes("Land")) return <FileText />;
 
-const reports=[
+    if (title.includes("Mining")) return <Leaf />;
 
+    if (title.includes("Environmental")) return <Clock />;
 
-{
-title:"Land Utilization Report",
-date:"12 July 2026",
-status:"Completed",
-icon:<FileText/>
-},
+    return <Brain />;
 
+  };
 
-{
-title:"Mining Impact Analysis",
-date:"10 July 2026",
-status:"Completed",
-icon:<Leaf/>
-},
+  return (
 
+    <div className="space-y-8 mt-10">
 
-{
-title:"Environmental Risk Report",
-date:"08 July 2026",
-status:"Processing",
-icon:<Clock/>
-},
+      {/* Header */}
 
+      <div className="bg-[#071A2D] text-white rounded-2xl p-8 flex justify-between items-center">
 
-{
-title:"Development Planning Report",
-date:"05 July 2026",
-status:"Completed",
-icon:<Brain/>
-}
+        <div>
 
+          <h1 className="text-3xl font-bold">
+            Government Report Center
+          </h1>
 
-];
+          <p className="text-gray-300 mt-2">
+            AI Generated GIS Intelligence Reports
+          </p>
 
+        </div>
 
+        <button className="bg-[#16A34A] px-6 py-3 rounded-xl flex gap-2 items-center">
 
-return(
+          <Brain size={20} />
 
+          Generate AI Report
 
-<div className="space-y-8 mt-10">
+        </button>
 
+      </div>
 
+      {/* Summary */}
 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
+        <div className="bg-white shadow rounded-xl p-6">
 
+          <FileText className="text-blue-600" />
 
-{/* Header */}
+          <h2 className="text-3xl font-bold mt-4">
+            {reportsData.length}
+          </h2>
 
+          <p>Total Reports</p>
 
-<div className="bg-[#071A2D] text-white rounded-2xl p-8 flex justify-between items-center">
+        </div>
 
+        <div className="bg-white shadow rounded-xl p-6">
 
+          <CheckCircle className="text-green-600" />
 
-<div>
+          <h2 className="text-3xl font-bold mt-4">
+            98%
+          </h2>
 
+          <p>Accuracy Rate</p>
 
-<h1 className="text-3xl font-bold">
+        </div>
 
+        <div className="bg-white shadow rounded-xl p-6">
 
-Government Report Center
+          <Download className="text-purple-600" />
 
+          <h2 className="text-3xl font-bold mt-4">
+            450
+          </h2>
 
-</h1>
+          <p>Downloads</p>
 
+        </div>
 
+      </div>
 
-<p className="text-gray-300 mt-2">
+      {/* Reports */}
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-AI generated GIS intelligence reports
+        {
 
+          reportsData.map((item,index)=>(
 
-</p>
+            <motion.div
 
+              key={index}
 
-</div>
+              whileHover={{scale:1.03}}
 
+              className="bg-white rounded-xl shadow p-6"
 
+            >
 
+              <div className="flex justify-between">
 
+                <div>
 
-<button className="bg-[#16A34A] px-6 py-3 rounded-xl flex gap-2">
+                  <div className="text-blue-600">
 
+                    {getIcon(item.title)}
 
-<Brain/>
+                  </div>
 
+                  <h2 className="font-bold text-xl mt-4">
 
-Generate AI Report
+                    {item.title}
 
+                  </h2>
 
-</button>
+                  <p className="text-gray-500">
 
+                    {item.date}
 
+                  </p>
 
+                </div>
 
-</div>
+                <span
 
+                  className={`h-fit px-3 py-1 rounded-full text-sm
 
+                  ${
 
+                    item.status==="Completed"
 
+                    ?
 
+                    "bg-green-100 text-green-700"
 
+                    :
 
+                    "bg-yellow-100 text-yellow-700"
 
+                  }`}
 
-{/* Summary */}
+                >
 
+                  {item.status}
 
-<div className="grid grid-cols-3 gap-6">
+                </span>
 
+              </div>
 
+              <button className="mt-6 bg-gray-100 hover:bg-gray-200 transition px-5 py-2 rounded-lg flex gap-2 items-center">
 
+                <Download size={18}/>
 
-<div className="bg-white shadow rounded-xl p-6">
+                Download PDF
 
+              </button>
 
-<FileText className="text-blue-600"/>
+            </motion.div>
 
+          ))
 
-<h2 className="text-3xl font-bold mt-4">
+        }
 
+      </div>
 
-120+
+    </div>
 
-
-</h2>
-
-
-<p>
-
-Reports Generated
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div className="bg-white shadow rounded-xl p-6">
-
-
-<CheckCircle className="text-green-600"/>
-
-
-<h2 className="text-3xl font-bold mt-4">
-
-
-98%
-
-
-</h2>
-
-
-<p>
-
-Accuracy Rate
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-<div className="bg-white shadow rounded-xl p-6">
-
-
-<Download className="text-purple-600"/>
-
-
-<h2 className="text-3xl font-bold mt-4">
-
-
-450
-
-
-</h2>
-
-
-<p>
-
-Downloads
-
-</p>
-
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-{/* Reports */}
-
-
-<div className="grid grid-cols-2 gap-6">
-
-
-{
-
-
-reports.map((item,index)=>(
-
-
-
-<motion.div
-
-key={index}
-
-whileHover={{scale:1.03}}
-
-className="bg-white rounded-xl shadow p-6"
-
-
->
-
-
-
-<div className="flex justify-between">
-
-
-
-<div>
-
-
-<div className="text-blue-600">
-
-
-{item.icon}
-
-
-</div>
-
-
-
-<h2 className="font-bold text-xl mt-4">
-
-
-{item.title}
-
-
-</h2>
-
-
-
-<p className="text-gray-500">
-
-
-{item.date}
-
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-<span
-
-className={`h-fit px-3 py-1 rounded-full text-sm
-
-${
-
-item.status==="Completed"
-
-?
-
-"bg-green-100 text-green-700"
-
-:
-
-"bg-yellow-100 text-yellow-700"
-
-}`}
-
->
-
-
-{item.status}
-
-
-</span>
-
-
-
-</div>
-
-
-
-
-
-<button className="mt-6 bg-gray-100 px-5 py-2 rounded-lg flex gap-2">
-
-
-<Download size={18}/>
-
-
-Download PDF
-
-
-</button>
-
-
-
-
-
-</motion.div>
-
-
-
-))
-
+  )
 
 }
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-)
-
-
-}
-
-
 
 export default Reports;

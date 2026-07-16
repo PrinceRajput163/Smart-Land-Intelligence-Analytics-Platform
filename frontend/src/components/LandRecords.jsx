@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { landRecords } from "../data/dummyData";
 
 import {
 
@@ -10,74 +11,6 @@ Filter
 
 
 
-const records=[
-
-
-{
-id:"GLIS-1001",
-location:"Dhanbad",
-district:"Jharkhand",
-owner:"Government",
-area:"240 Ha",
-category:"Mining",
-status:"Available",
-risk:"Low"
-},
-
-
-{
-id:"GLIS-1002",
-location:"Korba",
-district:"Chhattisgarh",
-owner:"Government",
-area:"520 Ha",
-category:"Coal",
-status:"Active",
-risk:"Medium"
-},
-
-
-{
-id:"GLIS-1003",
-location:"Singrauli",
-district:"Madhya Pradesh",
-owner:"Private",
-area:"310 Ha",
-category:"Industrial",
-status:"Review",
-risk:"Low"
-},
-
-
-{
-id:"GLIS-1004",
-location:"Talcher",
-district:"Odisha",
-owner:"Government",
-area:"600 Ha",
-category:"Forest",
-status:"Restricted",
-risk:"High"
-},
-
-
-{
-id:"GLIS-1005",
-location:"Bokaro",
-district:"Jharkhand",
-owner:"Government",
-area:"430 Ha",
-category:"Development",
-status:"Available",
-risk:"Low"
-}
-
-
-];
-
-
-
-
 function LandRecords(){
 
 
@@ -85,8 +18,7 @@ function LandRecords(){
 const [search,setSearch]=useState("");
 
 
-
-const filtered=records.filter(
+const filtered = landRecords.filter(
 
 item=>
 

@@ -1,204 +1,150 @@
 import {
-
-AlertTriangle,
-CheckCircle,
-Bell,
-Activity
-
+  AlertTriangle,
+  CheckCircle,
+  Bell,
+  Activity
 } from "lucide-react";
-
 
 import { motion } from "framer-motion";
 
+import { alertsData } from "../data/dummyData";
 
+function AlertPanel() {
 
-function AlertPanel(){
+  return (
 
+    <div className="bg-white rounded-2xl shadow p-6 mt-10">
 
-const alerts=[
+      {/* Header */}
 
-{
-msg:"Restricted forest activity detected",
-type:"High",
-color:"red"
-},
+      <div className="flex justify-between items-center">
 
-{
-msg:"Mining zone boundary updated",
-type:"Medium",
-color:"yellow"
-},
+        <h2 className="text-2xl font-bold flex items-center gap-2">
 
-{
-msg:"Government land verified",
-type:"Low",
-color:"green"
-}
+          <Bell className="text-blue-600"/>
 
-];
+          Intelligence Alerts
 
+        </h2>
 
+        <div className="flex items-center gap-2 text-green-600">
 
-return(
+          <Activity size={20}/>
 
+          <span className="font-semibold">
+            LIVE
+          </span>
 
-<div className="bg-white rounded-2xl shadow p-6 mt-10">
+        </div>
 
+      </div>
 
-<div className="flex justify-between items-center">
+      {/* Alerts */}
 
+      <div className="space-y-5 mt-6">
 
-<h2 className="text-2xl font-bold flex gap-2">
+        {
 
-<Bell className="text-blue-600"/>
+          alertsData.map((item,index)=>(
 
-Intelligence Alerts
+            <motion.div
 
-</h2>
+              key={index}
 
+              initial={{opacity:0,x:-20}}
 
+              animate={{opacity:1,x:0}}
 
-<div className="flex gap-2 text-green-600">
+              whileHover={{scale:1.02}}
 
+              className="flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition p-5 rounded-xl"
 
-<Activity/>
+            >
 
-Live
+              <div className="flex items-center gap-3">
 
+                {
 
-</div>
+                  item.color==="green"
 
+                  ?
 
+                  <CheckCircle className="text-green-600"/>
 
-</div>
+                  :
 
+                  <AlertTriangle
 
+                    className={
 
+                      item.color==="yellow"
 
+                      ?
 
-<div className="space-y-5 mt-6">
+                      "text-yellow-500"
 
+                      :
 
-{
+                      "text-red-600"
 
-alerts.map((item,index)=>(
+                    }
 
+                  />
 
-<motion.div
+                }
 
-key={index}
+                <p className="font-semibold">
 
-initial={{
-opacity:0,
-x:-20
-}}
+                  {item.msg}
 
-animate={{
-opacity:1,
-x:0
-}}
+                </p>
 
-className="flex justify-between items-center bg-gray-50 p-5 rounded-xl"
+              </div>
 
+              <span
 
->
+                className={`px-4 py-1 rounded-full text-sm font-medium
 
+                ${
 
-<div className="flex gap-3">
+                  item.color==="red"
 
+                  ?
 
-{
+                  "bg-red-100 text-red-700"
 
-item.color==="green"
+                  :
 
-?
+                  item.color==="yellow"
 
-<CheckCircle className="text-green-600"/>
+                  ?
 
-:
+                  "bg-yellow-100 text-yellow-700"
 
-<AlertTriangle className="text-red-600"/>
+                  :
 
+                  "bg-green-100 text-green-700"
 
-}
+                }`}
 
+              >
 
+                {item.type}
 
-<p className="font-semibold">
+              </span>
 
-{item.msg}
+            </motion.div>
 
-</p>
+          ))
 
+        }
 
-</div>
+      </div>
 
+    </div>
 
-
-
-
-<span
-
-className={
-
-`
-px-4 py-1 rounded-full text-sm
-
-${
-
-item.color==="red"
-
-?
-
-"bg-red-100 text-red-600"
-
-:
-
-item.color==="yellow"
-
-?
-
-"bg-yellow-100 text-yellow-600"
-
-:
-
-"bg-green-100 text-green-600"
+  );
 
 }
-
-`
-
-}
-
->
-
-
-{item.type}
-
-
-</span>
-
-
-
-</motion.div>
-
-
-))
-
-}
-
-
-
-</div>
-
-
-</div>
-
-
-)
-
-
-}
-
 
 export default AlertPanel;

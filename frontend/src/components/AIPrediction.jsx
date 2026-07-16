@@ -1,105 +1,100 @@
-import { Brain, TrendingUp, AlertTriangle } from "lucide-react";
+import {
+  Brain,
+  TrendingUp,
+  AlertTriangle
+} from "lucide-react";
 
+import { predictionData } from "../data/dummyData";
 
-function AIPrediction(){
+function AIPrediction() {
 
+  return (
 
-return(
+    <div className="bg-white rounded-xl shadow p-6 mt-10">
 
-<div className="bg-white rounded-xl shadow p-6 mt-10">
+      <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
 
+        <Brain />
 
-<h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+        AI Land Prediction
 
-<Brain/>
+      </h2>
 
-AI Land Prediction
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-</h2>
+        {/* Development Score */}
 
+        <div className="p-5 bg-green-100 rounded-xl">
 
+          <TrendingUp
+            size={35}
+            className="text-green-700"
+          />
 
-<div className="grid grid-cols-3 gap-6">
+          <h3 className="font-bold mt-3">
+            Development Suitability
+          </h3>
 
+          <p className="text-3xl font-bold mt-2">
 
-<div className="p-5 bg-green-100 rounded-xl">
+            {predictionData.result}
 
-<TrendingUp 
-size={35}
-/>
+          </p>
 
-<h3 className="font-bold mt-3">
-Development Growth
-</h3>
+        </div>
 
-<p className="text-3xl font-bold mt-2">
+        {/* Risk */}
 
-87%
+        <div className="p-5 bg-yellow-100 rounded-xl">
 
-</p>
+          <AlertTriangle
+            size={35}
+            className="text-yellow-700"
+          />
 
-</div>
+          <h3 className="font-bold mt-3">
 
+            Risk Level
 
+          </h3>
 
-<div className="p-5 bg-yellow-100 rounded-xl">
+          <p className="text-3xl font-bold mt-2">
 
-<AlertTriangle
-size={35}
-/>
+            {predictionData.risk}
 
-<h3 className="font-bold mt-3">
+          </p>
 
-Mining Risk Zone
+        </div>
 
-</h3>
+        {/* Confidence */}
 
+        <div className="p-5 bg-blue-100 rounded-xl">
 
-<p className="text-3xl font-bold mt-2">
+          <Brain
+            size={35}
+            className="text-blue-700"
+          />
 
-Medium
+          <h3 className="font-bold mt-3">
 
-</p>
+            AI Confidence
 
-</div>
+          </h3>
 
+          <p className="text-3xl font-bold mt-2">
 
+            {predictionData.confidence}
 
-<div className="p-5 bg-blue-100 rounded-xl">
+          </p>
 
+        </div>
 
-<Brain
-size={35}
-/>
+      </div>
 
+    </div>
 
-<h3 className="font-bold mt-3">
-
-AI Confidence
-
-</h3>
-
-
-<p className="text-3xl font-bold mt-2">
-
-94%
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-)
-
+  );
 
 }
-
 
 export default AIPrediction;
