@@ -1,189 +1,283 @@
 import {
-  FileText,
-  Download,
-  Brain,
-  CheckCircle,
-  Clock,
-  Leaf
+FileText,
+Download,
+Brain,
+CheckCircle,
+Clock,
+Leaf,
+Calendar,
+ShieldCheck
 } from "lucide-react";
 
 import { motion } from "framer-motion";
 
 import { reportsData } from "../data/dummyData";
 
-function Reports() {
+function Reports(){
 
-  const getIcon = (title) => {
+const getIcon=(title)=>{
 
-    if (title.includes("Land")) return <FileText />;
+if(title.includes("Land")) return <FileText/>;
 
-    if (title.includes("Mining")) return <Leaf />;
+if(title.includes("Mining")) return <Leaf/>;
 
-    if (title.includes("Environmental")) return <Clock />;
+if(title.includes("Environmental")) return <Leaf/>;
 
-    return <Brain />;
+return <Brain/>;
 
-  };
+};
 
-  return (
+return(
 
-    <div className="space-y-8 mt-10">
+<div className="space-y-8 mt-10">
 
-      {/* Header */}
+{/* Header */}
 
-      <div className="bg-[#071A2D] text-white rounded-2xl p-8 flex justify-between items-center">
+<div className="bg-[#071A2D] rounded-3xl p-8 text-white">
 
-        <div>
+<div className="flex justify-between items-center">
 
-          <h1 className="text-3xl font-bold">
-            Government Report Center
-          </h1>
+<div>
 
-          <p className="text-gray-300 mt-2">
-            AI Generated GIS Intelligence Reports
-          </p>
+<p className="uppercase tracking-widest text-green-400">
 
-        </div>
+Government Reports
 
-        <button className="bg-[#16A34A] px-6 py-3 rounded-xl flex gap-2 items-center">
+</p>
 
-          <Brain size={20} />
+<h1 className="text-4xl font-bold mt-2">
 
-          Generate AI Report
+National Report Center
 
-        </button>
+</h1>
 
-      </div>
+<p className="text-gray-300 mt-3">
 
-      {/* Summary */}
+Official AI generated GIS intelligence reports for government authorities.
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+</p>
 
-        <div className="bg-white shadow rounded-xl p-6">
+</div>
 
-          <FileText className="text-blue-600" />
+<button className="bg-[#16A34A] hover:bg-green-700 transition px-6 py-3 rounded-xl flex items-center gap-2">
 
-          <h2 className="text-3xl font-bold mt-4">
-            {reportsData.length}
-          </h2>
+<Brain size={20}/>
 
-          <p>Total Reports</p>
+Generate Report
 
-        </div>
+</button>
 
-        <div className="bg-white shadow rounded-xl p-6">
+</div>
 
-          <CheckCircle className="text-green-600" />
+</div>
 
-          <h2 className="text-3xl font-bold mt-4">
-            98%
-          </h2>
+{/* Summary */}
 
-          <p>Accuracy Rate</p>
+<div className="grid lg:grid-cols-4 gap-6">
 
-        </div>
+<div className="bg-white rounded-2xl border shadow p-6">
 
-        <div className="bg-white shadow rounded-xl p-6">
+<FileText className="text-blue-600"/>
 
-          <Download className="text-purple-600" />
+<h2 className="text-4xl font-bold mt-5">
 
-          <h2 className="text-3xl font-bold mt-4">
-            450
-          </h2>
+{reportsData.length}
 
-          <p>Downloads</p>
+</h2>
 
-        </div>
+<p className="text-gray-500 mt-2">
 
-      </div>
+Total Reports
 
-      {/* Reports */}
+</p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+</div>
 
-        {
+<div className="bg-white rounded-2xl border shadow p-6">
 
-          reportsData.map((item,index)=>(
+<CheckCircle className="text-green-600"/>
 
-            <motion.div
+<h2 className="text-4xl font-bold mt-5">
 
-              key={index}
+98%
 
-              whileHover={{scale:1.03}}
+</h2>
 
-              className="bg-white rounded-xl shadow p-6"
+<p className="text-gray-500 mt-2">
 
-            >
+Accuracy
 
-              <div className="flex justify-between">
+</p>
 
-                <div>
+</div>
 
-                  <div className="text-blue-600">
+<div className="bg-white rounded-2xl border shadow p-6">
 
-                    {getIcon(item.title)}
+<Download className="text-purple-600"/>
 
-                  </div>
+<h2 className="text-4xl font-bold mt-5">
 
-                  <h2 className="font-bold text-xl mt-4">
+450
 
-                    {item.title}
+</h2>
 
-                  </h2>
+<p className="text-gray-500 mt-2">
 
-                  <p className="text-gray-500">
+Downloads
 
-                    {item.date}
+</p>
 
-                  </p>
+</div>
 
-                </div>
+<div className="bg-white rounded-2xl border shadow p-6">
 
-                <span
+<Calendar className="text-orange-600"/>
 
-                  className={`h-fit px-3 py-1 rounded-full text-sm
+<h2 className="text-4xl font-bold mt-5">
 
-                  ${
+2026
 
-                    item.status==="Completed"
+</h2>
 
-                    ?
+<p className="text-gray-500 mt-2">
 
-                    "bg-green-100 text-green-700"
+Current Session
 
-                    :
+</p>
 
-                    "bg-yellow-100 text-yellow-700"
+</div>
 
-                  }`}
+{/* Reports */}
 
-                >
+</div>
 
-                  {item.status}
+<div className="grid lg:grid-cols-2 gap-6">
 
-                </span>
+{
 
-              </div>
+reportsData.map((item,index)=>(
 
-              <button className="mt-6 bg-gray-100 hover:bg-gray-200 transition px-5 py-2 rounded-lg flex gap-2 items-center">
+<motion.div
 
-                <Download size={18}/>
+key={index}
 
-                Download PDF
+whileHover={{y:-5}}
 
-              </button>
+className="bg-white rounded-2xl border shadow-lg p-6"
 
-            </motion.div>
+>
 
-          ))
+<div className="flex justify-between">
 
-        }
+<div>
 
-      </div>
+<div className="text-blue-600">
 
-    </div>
+{getIcon(item.title)}
 
-  )
+</div>
+
+<h2 className="text-2xl font-bold mt-4">
+
+{item.title}
+
+</h2>
+
+<div className="flex items-center gap-2 mt-3 text-gray-500">
+
+<Clock size={16}/>
+
+{item.date}
+
+</div>
+
+</div>
+
+<span
+
+className={`h-fit px-4 py-2 rounded-full text-sm
+
+${
+
+item.status==="Completed"
+
+?
+
+"bg-green-100 text-green-700"
+
+:
+
+"bg-yellow-100 text-yellow-700"
+
+}`}
+
+>
+
+{item.status}
+
+</span>
+
+</div>
+
+<div className="mt-8 flex justify-between items-center">
+
+<div className="flex items-center gap-2 text-green-600">
+
+<ShieldCheck size={18}/>
+
+Verified Report
+
+</div>
+
+<button className="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-3 rounded-xl flex items-center gap-2">
+
+<Download size={18}/>
+
+Download PDF
+
+</button>
+
+</div>
+
+</motion.div>
+
+))
+
+}
+
+</div>
+
+{/* Footer */}
+
+<div className="bg-[#071A2D] rounded-2xl text-white p-6 flex justify-between items-center">
+
+<div>
+
+<h3 className="font-bold">
+
+Government Digital Repository
+
+</h3>
+
+<p className="text-gray-300 mt-2">
+
+All reports are digitally verified and securely stored.
+
+</p>
+
+</div>
+
+<div className="bg-green-600 px-5 py-3 rounded-xl">
+
+Repository Active
+
+</div>
+
+</div>
+
+</div>
+
+)
 
 }
 

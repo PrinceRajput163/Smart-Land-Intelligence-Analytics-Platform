@@ -1,99 +1,243 @@
 import {
-  Brain,
-  TrendingUp,
-  AlertTriangle
+Brain,
+Activity,
+ShieldAlert,
+TrendingUp,
+Database,
+Map,
+CheckCircle2,
+Cpu
 } from "lucide-react";
 
-import { predictionData } from "../data/dummyData";
+import { motion } from "framer-motion";
 
-function AIPrediction() {
+function AIPrediction(){
 
-  return (
+const steps=[
 
-    <div className="bg-white rounded-xl shadow p-6 mt-10">
+{
+title:"GIS Data Collection",
+icon:<Database size={32}/>
+},
 
-      <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+{
+title:"Spatial Processing",
+icon:<Map size={32}/>
+},
 
-        <Brain />
+{
+title:"AI Analysis",
+icon:<Brain size={32}/>
+},
 
-        AI Land Prediction
+{
+title:"Prediction",
+icon:<Activity size={32}/>
+}
 
-      </h2>
+];
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+return(
 
-        {/* Development Score */}
+<div className="space-y-8 mt-10">
 
-        <div className="p-5 bg-green-100 rounded-xl">
+{/* Header */}
 
-          <TrendingUp
-            size={35}
-            className="text-green-700"
-          />
+<div className="bg-[#071A2D] rounded-3xl text-white p-8 shadow">
 
-          <h3 className="font-bold mt-3">
-            Development Suitability
-          </h3>
+<div className="flex justify-between items-center">
 
-          <p className="text-3xl font-bold mt-2">
+<div>
 
-            {predictionData.result}
+<p className="uppercase tracking-widest text-green-400">
 
-          </p>
+Artificial Intelligence
 
-        </div>
+</p>
 
-        {/* Risk */}
+<h1 className="text-4xl font-bold mt-2">
 
-        <div className="p-5 bg-yellow-100 rounded-xl">
+Government AI Prediction Engine
 
-          <AlertTriangle
-            size={35}
-            className="text-yellow-700"
-          />
+</h1>
 
-          <h3 className="font-bold mt-3">
+<p className="text-gray-300 mt-3">
 
-            Risk Level
+Machine Learning based land suitability analysis and decision support.
 
-          </h3>
+</p>
 
-          <p className="text-3xl font-bold mt-2">
+</div>
 
-            {predictionData.risk}
+<motion.div
 
-          </p>
+animate={{
+scale:[1,1.1,1]
+}}
 
-        </div>
+transition={{
+repeat:Infinity,
+duration:2
+}}
 
-        {/* Confidence */}
+className="bg-white/10 p-5 rounded-2xl"
 
-        <div className="p-5 bg-blue-100 rounded-xl">
+>
 
-          <Brain
-            size={35}
-            className="text-blue-700"
-          />
+<Cpu size={55}/>
 
-          <h3 className="font-bold mt-3">
+</motion.div>
 
-            AI Confidence
+</div>
 
-          </h3>
+</div>
 
-          <p className="text-3xl font-bold mt-2">
+{/* Statistics */}
 
-            {predictionData.confidence}
+<div className="grid lg:grid-cols-3 gap-6">
 
-          </p>
+<div className="bg-white rounded-2xl border shadow p-6">
 
-        </div>
+<Brain className="text-blue-600"/>
 
-      </div>
+<p className="text-gray-500 mt-5">
 
-    </div>
+Model Accuracy
 
-  );
+</p>
+
+<h2 className="text-5xl font-bold mt-2">
+
+94.7%
+
+</h2>
+
+</div>
+
+<div className="bg-white rounded-2xl border shadow p-6">
+
+<TrendingUp className="text-green-600"/>
+
+<p className="text-gray-500 mt-5">
+
+Confidence Score
+
+</p>
+
+<h2 className="text-5xl font-bold mt-2">
+
+91%
+
+</h2>
+
+</div>
+
+<div className="bg-white rounded-2xl border shadow p-6">
+
+<ShieldAlert className="text-yellow-500"/>
+
+<p className="text-gray-500 mt-5">
+
+Risk Level
+
+</p>
+
+<h2 className="text-5xl font-bold mt-2">
+
+LOW
+
+</h2>
+
+</div>
+
+</div>
+
+{/* Prediction */}
+
+<div className="bg-green-50 border border-green-200 rounded-3xl p-8">
+
+<div className="flex items-center gap-3">
+
+<CheckCircle2 className="text-green-600"/>
+
+<h2 className="text-3xl font-bold text-green-700">
+
+Prediction Result
+
+</h2>
+
+</div>
+
+<h1 className="text-5xl font-bold mt-8 text-[#071A2D]">
+
+Highly Suitable For Development
+
+</h1>
+
+<p className="text-gray-600 mt-5 leading-8">
+
+The selected land parcel has high infrastructure potential,
+low environmental risk,
+verified government ownership,
+and strong AI confidence for future development.
+
+</p>
+
+</div>
+
+{/* Pipeline */}
+
+<div className="bg-white rounded-3xl border shadow p-8">
+
+<h2 className="text-3xl font-bold mb-8">
+
+AI Processing Pipeline
+
+</h2>
+
+<div className="grid lg:grid-cols-4 gap-6">
+
+{
+
+steps.map((item,index)=>(
+
+<div
+
+key={index}
+
+className="bg-gray-50 rounded-2xl p-6 text-center border"
+
+>
+
+<div className="flex justify-center">
+
+<div className="w-16 h-16 rounded-full bg-[#071A2D] text-white flex items-center justify-center">
+
+{item.icon}
+
+</div>
+
+</div>
+
+<h3 className="font-bold mt-5">
+
+{item.title}
+
+</h3>
+
+</div>
+
+))
+
+}
+
+</div>
+
+</div>
+
+</div>
+
+)
 
 }
 

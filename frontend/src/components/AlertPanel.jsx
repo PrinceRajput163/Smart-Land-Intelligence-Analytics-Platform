@@ -1,149 +1,250 @@
 import {
-  AlertTriangle,
-  CheckCircle,
-  Bell,
-  Activity
+AlertTriangle,
+CheckCircle,
+Bell,
+Activity,
+ShieldAlert
 } from "lucide-react";
 
 import { motion } from "framer-motion";
 
 import { alertsData } from "../data/dummyData";
 
-function AlertPanel() {
+function AlertPanel(){
 
-  return (
+return(
 
-    <div className="bg-white rounded-2xl shadow p-6 mt-10">
+<div className="bg-white rounded-3xl border shadow-lg p-8 mt-10">
 
-      {/* Header */}
+{/* Header */}
 
-      <div className="flex justify-between items-center">
+<div className="flex justify-between items-center">
 
-        <h2 className="text-2xl font-bold flex items-center gap-2">
+<div>
 
-          <Bell className="text-blue-600"/>
+<p className="uppercase tracking-widest text-green-600 font-semibold">
 
-          Intelligence Alerts
+Government Intelligence
 
-        </h2>
+</p>
 
-        <div className="flex items-center gap-2 text-green-600">
+<h2 className="text-3xl font-bold text-[#071A2D] mt-2">
 
-          <Activity size={20}/>
+National Alert Center
 
-          <span className="font-semibold">
-            LIVE
-          </span>
+</h2>
 
-        </div>
+<p className="text-gray-500 mt-2">
 
-      </div>
+Real-time monitoring of GIS events and land intelligence alerts.
 
-      {/* Alerts */}
+</p>
 
-      <div className="space-y-5 mt-6">
+</div>
 
-        {
+<div className="flex items-center gap-2 bg-green-100 text-green-700 px-5 py-3 rounded-full">
 
-          alertsData.map((item,index)=>(
+<Activity size={20}/>
 
-            <motion.div
+LIVE
 
-              key={index}
+</div>
 
-              initial={{opacity:0,x:-20}}
+</div>
 
-              animate={{opacity:1,x:0}}
+{/* Summary */}
 
-              whileHover={{scale:1.02}}
+<div className="grid grid-cols-3 gap-6 mt-10">
 
-              className="flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition p-5 rounded-xl"
+<div className="bg-red-50 rounded-2xl p-6">
 
-            >
+<ShieldAlert className="text-red-600"/>
 
-              <div className="flex items-center gap-3">
+<h2 className="text-4xl font-bold mt-5">
 
-                {
+03
 
-                  item.color==="green"
+</h2>
 
-                  ?
+<p className="text-gray-500 mt-2">
 
-                  <CheckCircle className="text-green-600"/>
+Critical Alerts
 
-                  :
+</p>
 
-                  <AlertTriangle
+</div>
 
-                    className={
+<div className="bg-yellow-50 rounded-2xl p-6">
 
-                      item.color==="yellow"
+<AlertTriangle className="text-yellow-600"/>
 
-                      ?
+<h2 className="text-4xl font-bold mt-5">
 
-                      "text-yellow-500"
+08
 
-                      :
+</h2>
 
-                      "text-red-600"
+<p className="text-gray-500 mt-2">
 
-                    }
+Warnings
 
-                  />
+</p>
 
-                }
+</div>
 
-                <p className="font-semibold">
+<div className="bg-green-50 rounded-2xl p-6">
 
-                  {item.msg}
+<CheckCircle className="text-green-600"/>
 
-                </p>
+<h2 className="text-4xl font-bold mt-5">
 
-              </div>
+24
 
-              <span
+</h2>
 
-                className={`px-4 py-1 rounded-full text-sm font-medium
+<p className="text-gray-500 mt-2">
 
-                ${
+Resolved Today
 
-                  item.color==="red"
+</p>
 
-                  ?
+</div>
 
-                  "bg-red-100 text-red-700"
+</div>
 
-                  :
+{/* Alert List */}
 
-                  item.color==="yellow"
+<div className="space-y-5 mt-10">
 
-                  ?
+{
 
-                  "bg-yellow-100 text-yellow-700"
+alertsData.map((item,index)=>(
 
-                  :
+<motion.div
 
-                  "bg-green-100 text-green-700"
+key={index}
 
-                }`}
+initial={{opacity:0,y:20}}
 
-              >
+animate={{opacity:1,y:0}}
 
-                {item.type}
+transition={{delay:index*0.1}}
 
-              </span>
+whileHover={{scale:1.01}}
 
-            </motion.div>
+className="border rounded-2xl p-5 flex justify-between items-center hover:shadow-md transition"
 
-          ))
+>
 
-        }
+<div className="flex items-center gap-4">
 
-      </div>
+{
 
-    </div>
+item.color==="green"
 
-  );
+?
+
+<CheckCircle className="text-green-600"/>
+
+:
+
+item.color==="yellow"
+
+?
+
+<AlertTriangle className="text-yellow-600"/>
+
+:
+
+<ShieldAlert className="text-red-600"/>
+
+}
+
+<div>
+
+<h3 className="font-bold">
+
+{item.msg}
+
+</h3>
+
+<p className="text-gray-500 text-sm">
+
+Government Monitoring Service
+
+</p>
+
+</div>
+
+</div>
+
+<span
+
+className={`px-4 py-2 rounded-full font-semibold
+
+${
+
+item.color==="red"
+
+?
+
+"bg-red-100 text-red-700"
+
+:
+
+item.color==="yellow"
+
+?
+
+"bg-yellow-100 text-yellow-700"
+
+:
+
+"bg-green-100 text-green-700"
+
+}`}
+
+>
+
+{item.type}
+
+</span>
+
+</motion.div>
+
+))
+
+}
+
+</div>
+
+{/* Footer */}
+
+<div className="mt-10 bg-[#071A2D] rounded-2xl p-6 text-white flex justify-between items-center">
+
+<div className="flex items-center gap-3">
+
+<Bell/>
+
+<span>
+
+Government Monitoring Service Active
+
+</span>
+
+</div>
+
+<div className="text-green-400 font-semibold">
+
+24×7 Surveillance Enabled
+
+</div>
+
+</div>
+
+</div>
+
+)
 
 }
 

@@ -1,217 +1,106 @@
 import { motion } from "framer-motion";
-
-import {
-
-TrendingUp
-
-} from "lucide-react";
-
-
+import { TrendingUp } from "lucide-react";
 
 function StatCard({
-
 title,
-
 value,
-
 icon,
-
 percentage
-
 }){
-
-
 
 return(
 
-
-
 <motion.div
 
+initial={{opacity:0,y:30}}
 
-initial={{
-opacity:0,
-y:30
-}}
-
-
-animate={{
-opacity:1,
-y:0
-}}
-
+animate={{opacity:1,y:0}}
 
 whileHover={{
-
-scale:1.05,
-
-y:-5
-
+y:-8,
+scale:1.02
 }}
 
+transition={{duration:0.3}}
 
-className="
-bg-white 
-rounded-2xl 
-shadow-lg 
-p-6 
-border
-hover:shadow-2xl
-transition
-"
-
+className="bg-white rounded-2xl border border-gray-200 shadow hover:shadow-2xl transition overflow-hidden"
 
 >
 
+<div className="h-2 bg-[#16A34A]"></div>
 
-
-
-
-{/* Top */}
-
-
+<div className="p-6">
 
 <div className="flex justify-between items-start">
 
-
-
 <div>
 
-
-
-<p className="text-gray-500 text-sm">
-
+<p className="text-gray-500 uppercase text-xs tracking-widest">
 
 {title}
 
-
 </p>
 
-
-
-
-
-<h1 className="text-4xl font-bold mt-3 text-[#071A2D]">
-
+<h2 className="text-4xl font-bold text-[#071A2D] mt-4">
 
 {value}
 
-
-</h1>
-
-
-
+</h2>
 
 </div>
 
-
-
-
-
-<div className="bg-blue-100 text-blue-600 p-4 rounded-2xl">
-
-
+<div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
 
 {icon}
 
-
+</div>
 
 </div>
 
+<div className="mt-8">
 
+<div className="flex justify-between text-sm">
 
+<span className="text-gray-500">
 
-</div>
-
-
-
-
-
-
-
-
-
-{/* Growth */}
-
-
-
-<div className="flex items-center gap-2 mt-6 text-green-600">
-
-
-
-<TrendingUp size={18}/>
-
-
-
-<span className="font-semibold text-sm">
-
-
-
-{percentage} Growth
-
-
+Growth
 
 </span>
 
+<span className="font-semibold text-green-600 flex items-center gap-2">
 
+<TrendingUp size={16}/>
 
+{percentage}
+
+</span>
 
 </div>
 
-
-
-
-
-
-
-
-
-{/* Progress */}
-
-
-
-<div className="w-full bg-gray-200 rounded-full h-2 mt-5">
-
-
+<div className="w-full h-2 bg-gray-200 rounded-full mt-4">
 
 <motion.div
 
-
 initial={{width:0}}
 
+animate={{width:"82%"}}
 
-animate={{width:"80%"}}
+transition={{duration:1.5}}
 
-
-transition={{
-
-duration:1.5
-
-}}
-
-
-className="bg-[#16A34A] h-2 rounded-full"
-
+className="h-2 bg-[#16A34A] rounded-full"
 
 />
 
-
+</div>
 
 </div>
 
-
-
-
-
+</div>
 
 </motion.div>
 
-
 )
 
-
 }
-
-
 
 export default StatCard;
