@@ -1,304 +1,500 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-LayoutDashboard,
-Map,
-Database,
-BarChart3,
-Brain,
-FileText,
-Settings,
-Menu,
-ChevronRight,
-ShieldCheck,
-Activity
+  LayoutDashboard,
+  Map,
+  Database,
+  BarChart3,
+  Brain,
+  FileText,
+  Settings,
+  Menu,
+  X,
+  ChevronRight,
+  ShieldCheck,
+  Activity,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { motion } from "framer-motion";
+function Sidebar() {
 
-function Sidebar(){
+  const [collapsed, setCollapsed] = useState(false);
 
-const [open,setOpen]=useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-const menu=[
+  const [isMobile, setIsMobile] = useState(false);
 
-{
-name:"Dashboard",
-path:"/dashboard",
-icon:<LayoutDashboard size={22}/>
-},
+  const [isTablet, setIsTablet] = useState(false);
 
-{
-name:"GIS Intelligence",
-path:"/gis",
-icon:<Map size={22}/>
-},
+  useEffect(() => {
 
-{
-name:"Land Records",
-path:"/records",
-icon:<Database size={22}/>
-},
+    const handleResize = () => {
 
-{
-name:"Analytics",
-path:"/analytics",
-icon:<BarChart3 size={22}/>
-},
+      const width = window.innerWidth;
 
-{
-name:"AI Prediction",
-path:"/ai",
-icon:<Brain size={22}/>
-},
+      setIsMobile(width < 768);
 
-{
-name:"Reports",
-path:"/reports",
-icon:<FileText size={22}/>
-},
+      setIsTablet(width >= 768 && width < 1280);
 
-{
-name:"Settings",
-path:"/settings",
-icon:<Settings size={22}/>
-}
+      if (width < 1280) {
 
-];
+        setCollapsed(true);
 
-return(
+      } else {
 
-<motion.div
+        setCollapsed(false);
 
-animate={{
+      }
 
-width:open?290:90
+      if (width >= 768) {
 
-}}
+        setMobileOpen(false);
 
-className="min-h-screen bg-[#071A2D] text-white flex flex-col"
+      }
 
->
+    };
 
-{/* Header */}
+    handleResize();
 
-<div className="border-b border-white/10 p-6">
+    window.addEventListener("resize", handleResize);
 
-<div className="flex justify-between items-center">
+    return () => window.removeEventListener("resize", handleResize);
 
-{
+  }, []);
 
-open &&
+  const menu = [
 
-<div>
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <LayoutDashboard size={22} />
+    },
 
-<p className="uppercase text-green-400 text-xs tracking-widest">
+    {
+      name: "GIS Intelligence",
+      path: "/gis",
+      icon: <Map size={22} />
+    },
 
-Government Platform
+    {
+      name: "Land Records",
+      path: "/records",
+      icon: <Database size={22} />
+    },
 
-</p>
+    {
+      name: "Analytics",
+      path: "/analytics",
+      icon: <BarChart3 size={22} />
+    },
 
-<h2 className="text-2xl font-bold mt-2">
+    {
+      name: "AI Prediction",
+      path: "/ai",
+      icon: <Brain size={22} />
+    },
 
-Smart Land AI
+    {
+      name: "Reports",
+      path: "/reports",
+      icon: <FileText size={22} />
+    },
 
-</h2>
+    {
+      name: "Settings",
+      path: "/settings",
+      icon: <Settings size={22} />
+    }
 
-<p className="text-sm text-gray-400 mt-1">
+  ];
 
-Version 2.0
+  const sidebarWidth = collapsed ? 90 : 290;
 
-</p>
+  const SidebarContent = () => (
 
-</div>
+    <motion.div
 
-}
+      animate={{
 
-<button
+        width: sidebarWidth
 
-onClick={()=>setOpen(!open)}
+      }}
 
-className="bg-white/10 hover:bg-white/20 transition p-3 rounded-xl"
+      transition={{
 
->
+        duration: 0.25
 
-<Menu size={22}/>
+      }}
 
-</button>
+      className="h-screen bg-[#071A2D] text-white flex flex-col shadow-2xl"
 
-</div>
+    >
 
-</div>
+      {/* Header */}
 
-{/* Navigation */}
+      <div className="border-b border-white/10 p-6">
 
-<div className="flex-1 px-4 py-6">
+        <div className="flex justify-between items-center">
 
-{
+          {
 
-open &&
+            !collapsed && (
 
-<p className="text-xs uppercase tracking-widest text-gray-400 mb-5 px-3">
+              <div>
 
-Navigation
+                <p className="uppercase text-green-400 text-xs tracking-widest">
 
-</p>
+                  Government Platform
 
-}
+                </p>
 
-<div className="space-y-2">
+                <h2 className="text-2xl font-bold mt-2">
 
-{
+                  Smart Land AI
 
-menu.map((item)=>(
+                </h2>
 
-<NavLink
+                <p className="text-sm text-slate-400 mt-1">
 
-key={item.name}
+                  Version 2.0
 
-to={item.path}
+                </p>
 
-className={({isActive})=>
+              </div>
 
-`flex items-center justify-between rounded-xl px-4 py-4 transition
+            )
 
-${
+          }
 
-isActive
+          {
 
-?
+            !isMobile && (
 
-"bg-blue-600 shadow-lg"
+              <button
 
-:
+                onClick={() => setCollapsed(!collapsed)}
 
-"hover:bg-white/10"
+                className="bg-white/10 hover:bg-white/20 transition p-3 rounded-xl"
 
-}`
+              >
 
-}
+                <Menu size={22} />
 
->
+              </button>
 
-<div className="flex items-center gap-4">
+            )
 
-{item.icon}
+          }
 
-{
+          {
 
-open &&
+            isMobile && (
 
-<span>
+              <button
 
-{item.name}
+                onClick={() => setMobileOpen(false)}
 
-</span>
+                className="bg-white/10 hover:bg-white/20 transition p-3 rounded-xl"
 
-}
+              >
 
-</div>
+                <X size={22} />
 
-{
+              </button>
 
-open &&
+            )
 
-<ChevronRight size={18}/>
+          }
 
-}
+        </div>
 
-</NavLink>
+      </div>
 
-))
+      {/* Navigation starts here in Part 2 */}
 
-}
+            {/* Navigation */}
 
-</div>
+      <div className="flex-1 px-4 py-6 overflow-y-auto">
 
-</div>
+        {
 
-{/* Footer */}
+          !collapsed && (
 
-<div className="border-t border-white/10 p-5">
+            <p className="text-xs uppercase tracking-widest text-slate-400 mb-5 px-3">
 
-{
+              Navigation
 
-open &&
+            </p>
 
-<div className="space-y-4">
+          )
 
-<div className="flex items-center justify-between">
+        }
 
-<div className="flex items-center gap-2">
+        <div className="space-y-2">
 
-<Activity
+          {
 
-size={18}
+            menu.map((item) => (
 
-className="text-green-400"
+              <NavLink
 
-/>
+                key={item.name}
 
-<span>
+                to={item.path}
 
-System
+                onClick={() => {
 
-</span>
+                  if (isMobile) {
 
-</div>
+                    setMobileOpen(false);
 
-<span className="text-green-400 font-semibold">
+                  }
 
-ONLINE
+                }}
 
-</span>
+                className={({ isActive }) =>
 
-</div>
+                  `flex items-center justify-between rounded-xl px-4 py-4 transition-all duration-200
 
-<div className="flex items-center justify-between">
+                  ${
 
-<div className="flex items-center gap-2">
+                    isActive
 
-<ShieldCheck
+                      ? "bg-blue-600 shadow-lg"
 
-size={18}
+                      : "hover:bg-white/10"
 
-className="text-blue-400"
+                  }`
 
-/>
+                }
 
-<span>
+              >
 
-Security
+                <div
 
-</span>
+                  className={`flex items-center ${
 
-</div>
+                    collapsed
 
-<span className="text-blue-400 font-semibold">
+                      ? "justify-center w-full"
 
-ACTIVE
+                      : "gap-4"
 
-</span>
+                  }`}
 
-</div>
+                >
 
-<div className="bg-green-600 rounded-xl text-center py-3 font-semibold">
+                  {item.icon}
 
-Government Ready
+                  {
 
-</div>
+                    !collapsed && (
 
-</div>
+                      <span className="font-medium">
 
-}
+                        {item.name}
 
-</div>
+                      </span>
 
-</motion.div>
+                    )
 
-)
+                  }
+
+                </div>
+
+                {
+
+                  !collapsed && (
+
+                    <ChevronRight size={18} />
+
+                  )
+
+                }
+
+              </NavLink>
+
+            ))
+
+          }
+
+        </div>
+
+      </div>
+
+      {/* Footer */}
+
+      <div className="border-t border-white/10 p-5">
+
+        {
+
+          !collapsed ? (
+
+            <div className="space-y-4">
+
+              <div className="flex items-center justify-between">
+
+                <div className="flex items-center gap-2">
+
+                  <Activity
+
+                    size={18}
+
+                    className="text-green-400"
+
+                  />
+
+                  <span>System</span>
+
+                </div>
+
+                <span className="text-green-400 font-semibold">
+
+                  ONLINE
+
+                </span>
+
+              </div>
+
+              <div className="flex items-center justify-between">
+
+                <div className="flex items-center gap-2">
+
+                  <ShieldCheck
+
+                    size={18}
+
+                    className="text-blue-400"
+
+                  />
+
+                  <span>Security</span>
+
+                </div>
+
+                <span className="text-blue-400 font-semibold">
+
+                  ACTIVE
+
+                </span>
+
+              </div>
+
+              <div className="bg-green-600 rounded-xl text-center py-3 font-semibold">
+
+                Government Ready
+
+              </div>
+
+            </div>
+
+          ) : (
+
+            <div className="flex flex-col items-center gap-5">
+
+              <Activity
+
+                className="text-green-400"
+
+                size={20}
+
+              />
+
+              <ShieldCheck
+
+                className="text-blue-400"
+
+                size={20}
+
+              />
+
+            </div>
+
+          )
+
+        }
+
+      </div>
+
+    </motion.div>
+
+  );
+
+  if (isMobile) {
+
+    return (
+
+      <>
+
+        <button
+
+          onClick={() => setMobileOpen(true)}
+
+          className="fixed top-5 left-5 z-[1000] bg-[#071A2D] text-white p-3 rounded-xl shadow-xl md:hidden"
+
+        >
+
+          <Menu size={22} />
+
+        </button>
+
+        <AnimatePresence>
+
+          {
+
+            mobileOpen && (
+
+              <>
+
+                <motion.div
+
+                  initial={{ opacity: 0 }}
+
+                  animate={{ opacity: 1 }}
+
+                  exit={{ opacity: 0 }}
+
+                  onClick={() => setMobileOpen(false)}
+
+                  className="fixed inset-0 bg-black/50 z-[999]"
+
+                />
+
+                <motion.div
+
+                  initial={{ x: -320 }}
+
+                  animate={{ x: 0 }}
+
+                  exit={{ x: -320 }}
+
+                  transition={{ duration: 0.25 }}
+
+                  className="fixed left-0 top-0 z-[1000]"
+
+                >
+
+                  <SidebarContent />
+
+                </motion.div>
+
+              </>
+
+            )
+
+          }
+
+        </AnimatePresence>
+
+      </>
+
+    );
+
+  }
+
+  return <SidebarContent />;
 
 }
 

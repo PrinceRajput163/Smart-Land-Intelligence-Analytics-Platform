@@ -26,11 +26,11 @@ item.id.toLowerCase().includes(search.toLowerCase())
 
 return(
 
-<div className="bg-white rounded-3xl border shadow-lg p-8 mt-10">
+<div className="bg-white rounded-3xl border shadow-lg p-4 sm:p-6 lg:p-8 mt-6 lg:mt-10">
 
 {/* Header */}
 
-<div className="flex justify-between items-center">
+<div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
 
 <div>
 
@@ -40,7 +40,7 @@ Government Database
 
 </p>
 
-<h2 className="text-3xl font-bold text-[#071A2D] mt-2">
+<h2 className="text-2xl lg:text-3xl font-bold text-[#071A2D] mt-2">
 
 GLIS Land Records
 
@@ -54,9 +54,9 @@ Centralized Government Land Information System
 
 </div>
 
-<div className="flex gap-3">
+<div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
-<button className="flex items-center gap-2 bg-gray-100 px-5 py-3 rounded-xl">
+<button className="flex items-center justify-center gap-2 bg-gray-100 px-5 py-3 rounded-xl w-full sm:w-auto">
 
 <Filter size={18}/>
 
@@ -64,7 +64,7 @@ Filter
 
 </button>
 
-<button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-xl">
+<button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-xl w-full sm:w-auto">
 
 <Download size={18}/>
 
@@ -78,7 +78,7 @@ Export
 
 {/* Search */}
 
-<div className="mt-8 flex items-center border rounded-2xl px-5">
+<div className="mt-8 flex items-center border rounded-2xl px-4 sm:px-5">
 
 <Search className="text-gray-500"/>
 
@@ -100,7 +100,7 @@ className="flex-1 p-4 outline-none"
 
 <div className="grid grid-cols-4 gap-6 mt-8">
 
-<div className="bg-blue-50 rounded-2xl p-5">
+<div className="bg-blue-50 rounded-2xl p-4 lg:p-5">
 
 <Database className="text-blue-600"/>
 
@@ -118,7 +118,7 @@ Records
 
 </div>
 
-<div className="bg-green-50 rounded-2xl p-5">
+<div className="]bg-green-50 rounded-2xl p-4 lg:p-5">
 
 <MapPin className="text-green-600"/>
 
@@ -136,7 +136,7 @@ Districts
 
 </div>
 
-<div className="bg-yellow-50 rounded-2xl p-5">
+<div className="bg-yellow-50 rounded-2xl p-4 lg:p-5">
 
 <p className="text-gray-500">
 
@@ -152,7 +152,7 @@ Verified
 
 </div>
 
-<div className="bg-red-50 rounded-2xl p-5">
+<div className="bg-red-50 rounded-2xl p-4 lg:p-5">
 
 <p className="text-gray-500">
 
@@ -160,7 +160,7 @@ Pending
 
 </p>
 
-<h2 className="text-3xl font-bold">
+<h2 className="text-2xl lg:text-3xl font-bold">
 
 12
 
@@ -174,7 +174,7 @@ Pending
 
 <div className="overflow-x-auto mt-10">
 
-<table className="w-full">
+<table className="min-w-[1000px] w-ful">
 
 <thead>
 
@@ -290,7 +290,7 @@ item.risk==="Medium"
 
 {/* Footer */}
 
-<div className="flex justify-between items-center mt-8">
+<div className="flex flex-col lg:flex-row gap-4 lg:justify-between lg:items-center mt-8">
 
 <p className="text-gray-500">
 
@@ -306,7 +306,7 @@ records
 
 </p>
 
-<div className="flex gap-3">
+<div className="flex justify-center lg:justify-end gap-3 flex-wrap">
 
 <button className="px-5 py-2 rounded-xl bg-gray-100">
 

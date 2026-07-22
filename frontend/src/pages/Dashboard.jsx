@@ -31,7 +31,7 @@ return(
 
 {/* Header */}
 
-<div className="bg-[#071A2D] rounded-3xl text-white p-10">
+<div className="bg-[#071A2D] rounded-3xl text-white p-6 lg:p-10">
 
 <p className="uppercase tracking-widest text-green-400">
 
@@ -39,7 +39,7 @@ Government Command Center
 
 </p>
 
-<h1 className="text-5xl font-bold mt-3">
+<h1 className="text-3xl lg:text-5xl font-bold mt-3">
 
 National Land Intelligence Dashboard
 
@@ -52,7 +52,7 @@ land records management and government analytics platform.
 
 </p>
 
-<div className="flex gap-4 mt-8">
+<div className="flex flex-wrap gap-3 lg:gap-4 mt-8">
 
 <div className="bg-green-600 px-5 py-3 rounded-xl">
 

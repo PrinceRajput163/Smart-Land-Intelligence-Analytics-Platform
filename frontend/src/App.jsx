@@ -121,128 +121,66 @@ element={<Home/>}
 
 
 
-<div className="flex">
+<div className="flex min-h-screen bg-[#F8FAFC]">
 
+    <Sidebar />
 
+    <main className="flex-1 overflow-x-hidden">
 
-<Sidebar/>
+        <div className="px-4 sm:px-6 lg:px-8 py-4 lg:py-6">
 
+            <Navbar />
 
+            <div className="mt-6 lg:mt-10">
 
+                <Routes>
 
-<div className="flex-1 bg-gray-100 min-h-screen p-10">
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard />}
+                    />
 
+                    <Route
+                        path="/gis"
+                        element={<GISPage />}
+                    />
 
+                    <Route
+                        path="/records"
+                        element={<LandRecordsPage />}
+                    />
 
+                    <Route
+                        path="/analytics"
+                        element={<AnalyticsPage />}
+                    />
 
-<Navbar/>
+                    <Route
+                        path="/ai"
+                        element={<AIPredictionPage />}
+                    />
 
+                    <Route
+                        path="/reports"
+                        element={<ReportsPage />}
+                    />
 
+                    <Route
+                        path="/settings"
+                        element={<SettingsPage />}
+                    />
 
+                </Routes>
 
-<div className="mt-10">
+            </div>
 
+        </div>
 
-
-
-<Routes>
-
-
-
-
-<Route
-
-path="/dashboard"
-
-element={<Dashboard/>}
-
-/>
-
-
-
-
-<Route
-
-path="/gis"
-
-element={<GISPage/>}
-
-/>
-
-
-
-
-<Route
-
-path="/records"
-
-element={<LandRecordsPage/>}
-
-/>
-
-
-
-
-<Route
-
-path="/analytics"
-
-element={<AnalyticsPage/>}
-
-/>
-
-
-
-
-<Route
-
-path="/ai"
-
-element={<AIPredictionPage/>}
-
-/>
-
-
-
-
-<Route
-
-path="/reports"
-
-element={<ReportsPage/>}
-
-/>
-
-
-
-
-<Route
-
-path="/settings"
-
-element={<SettingsPage/>}
-
-/>
-
-
-
-</Routes>
-
-
+    </main>
 
 </div>
-
-
-
-</div>
-
-
-
-</div>
-
 
 )
-
 
 }
 
