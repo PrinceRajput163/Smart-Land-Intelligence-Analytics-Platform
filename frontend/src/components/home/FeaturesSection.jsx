@@ -1,64 +1,63 @@
 import { motion } from "framer-motion";
 
 import {
-
 Brain,
 Map,
 Database,
-Building2,
-Leaf,
-ShieldCheck
-
+BarChart3,
+FileText,
+ShieldCheck,
+ArrowRight
 } from "lucide-react";
 
 const features=[
 
 {
-title:"AI Land Intelligence",
-description:"AI powered prediction and suitability analysis for government land planning.",
-icon:<Brain size={34}/>,
-color:"text-blue-600",
-bg:"bg-blue-50"
+title:"AI Decision Support",
+icon:<Brain size={36}/>,
+color:"text-purple-600",
+bg:"bg-purple-50",
+description:"Artificial Intelligence powered land suitability analysis and prediction for government planning."
 },
 
 {
-title:"GIS Mapping System",
-description:"Interactive geospatial visualization with multi-layer GIS intelligence.",
-icon:<Map size={34}/>,
+title:"GIS Intelligence",
+icon:<Map size={36}/>,
 color:"text-green-600",
-bg:"bg-green-50"
+bg:"bg-green-50",
+description:"Interactive GIS mapping with spatial intelligence and real-time land monitoring."
 },
 
 {
 title:"Land Records",
-description:"Centralized government land records with intelligent search capabilities.",
-icon:<Database size={34}/>,
+icon:<Database size={36}/>,
+color:"text-blue-600",
+bg:"bg-blue-50",
+description:"Centralized government land records with ownership verification and search."
+},
+
+{
+title:"Analytics Dashboard",
+icon:<BarChart3 size={36}/>,
 color:"text-yellow-600",
-bg:"bg-yellow-50"
+bg:"bg-yellow-50",
+description:"Data visualization and analytical insights for strategic land management."
 },
 
 {
-title:"Infrastructure Planning",
-description:"Support infrastructure development using AI assisted land analytics.",
-icon:<Building2 size={34}/>,
-color:"text-purple-600",
-bg:"bg-purple-50"
-},
-
-{
-title:"Environmental Monitoring",
-description:"Monitor forests, mining regions and environmentally sensitive zones.",
-icon:<Leaf size={34}/>,
-color:"text-green-700",
-bg:"bg-green-100"
-},
-
-{
-title:"Decision Support",
-description:"Enterprise dashboard for planning, monitoring and strategic decisions.",
-icon:<ShieldCheck size={34}/>,
+title:"Government Reports",
+icon:<FileText size={36}/>,
 color:"text-red-600",
-bg:"bg-red-50"
+bg:"bg-red-50",
+description:"Generate official reports for planning, monitoring and policy making."
+},
+
+{
+title:"Enterprise Security",
+icon:<ShieldCheck size={36}/>,
+color:"text-cyan-600",
+bg:"bg-cyan-50",
+description:"Secure access with government-grade authentication and role based permissions."
 }
 
 ];
@@ -73,21 +72,27 @@ return(
 
 <div className="text-center">
 
-<h2 className="text-4xl font-bold text-[#071A2D]">
+<p className="uppercase tracking-widest text-green-600 font-semibold">
 
-Platform Capabilities
+Platform Modules
+
+</p>
+
+<h2 className="text-4xl font-bold text-[#071A2D] mt-3">
+
+Government Intelligence Services
 
 </h2>
 
-<p className="text-gray-500 text-lg mt-4">
+<p className="text-gray-500 mt-4">
 
-Integrated modules supporting intelligent land management and government decision making.
+Integrated modules for intelligent land governance, GIS monitoring and AI-assisted decision support.
 
 </p>
 
 </div>
 
-<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+<div className="grid lg:grid-cols-3 gap-8 mt-14">
 
 {
 
@@ -99,7 +104,7 @@ key={index}
 
 initial={{
 opacity:0,
-y:30
+y:40
 }}
 
 whileInView={{
@@ -113,34 +118,50 @@ once:true
 
 transition={{
 duration:0.5,
-delay:index*0.1
+delay:index*0.08
 }}
 
 whileHover={{
 y:-8
 }}
 
-className="bg-white border rounded-2xl shadow hover:shadow-xl transition p-8"
+className="border rounded-3xl bg-white shadow hover:shadow-2xl transition overflow-hidden"
 
 >
 
-<div className={`${item.bg} ${item.color} w-16 h-16 rounded-2xl flex items-center justify-center`}>
+<div className={`${item.bg} p-8`}>
+
+<div className={`${item.color}`}>
 
 {item.icon}
 
 </div>
 
-<h3 className="text-2xl font-bold text-[#071A2D] mt-6">
+</div>
+
+<div className="p-8">
+
+<h2 className="text-2xl font-bold text-[#071A2D]">
 
 {item.title}
 
-</h3>
+</h2>
 
-<p className="text-gray-600 leading-7 mt-4">
+<p className="text-gray-500 leading-8 mt-5">
 
 {item.description}
 
 </p>
+
+<button className="mt-8 flex items-center gap-2 text-blue-600 font-semibold hover:gap-4 transition-all">
+
+Learn More
+
+<ArrowRight size={18}/>
+
+</button>
+
+</div>
 
 </motion.div>
 

@@ -65,7 +65,7 @@ function AnalyticsChart(){
 
 return(
 
-<div className="space-y-8 mt-10">
+<div className="space-y-6 lg:space-y-8 mt-6 lg:mt-10">
 
 <div>
 
@@ -75,7 +75,7 @@ Government Analytics
 
 </p>
 
-<h1 className="text-4xl font-bold text-[#071A2D] mt-2">
+<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#071A2D] mt-2">
 
 National Land Intelligence Dashboard
 
@@ -89,19 +89,19 @@ Real-time analytical insights for intelligent land management.
 
 </div>
 
-<div className="grid lg:grid-cols-2 gap-8">
+<div className="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8">
 
 {/* PIE */}
 
-<div className="bg-white rounded-2xl border shadow p-6">
+<div className="bg-white rounded-2xl border shadow-lg p-4 sm:p-6">
 
-<h2 className="font-bold text-xl mb-6">
+<h2 className="font-bold text-lg lg:text-xl mb-4 lg:mb-6">
 
 Land Distribution
 
 </h2>
 
-<ResponsiveContainer width="100%" height={320}>
+<ResponsiveContainer width="100%" height= {320}>
 
 <PieChart>
 
@@ -113,7 +113,7 @@ dataKey="value"
 
 nameKey="name"
 
-outerRadius={100}
+outerRadius={window.innerWidth < 640 ? 75 : 100}
 
 label
 
