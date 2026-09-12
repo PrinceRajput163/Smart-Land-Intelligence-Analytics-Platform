@@ -1,238 +1,242 @@
-import StatCard from "../components/StatCard";
-import MapView from "../components/MapView";
-import AnalyticsChart from "../components/AnalyticsChart";
-import AIPrediction from "../components/AIPrediction";
-import AIAssistant from "../components/AIAssistant";
-import AlertPanel from "../components/AlertPanel";
-import LandRecords from "../components/LandRecords";
-import Reports from "../components/Reports";
+import StatCard from "../components/common/StatCard";
+import MapView from "../components/gis/MapView";
+import AnalyticsChart from "../components/analytics/AnalyticsChart";
+import AIPrediction from "../components/ai/AIPrediction";
+import AIAssistant from "../components/ai/AIAssistant";
+import AlertPanel from "../components/dashboard/AlertPanel";
+import LandRecords from "../components/land-records/LandRecords";
+import Reports from "../components/reports/Reports";
 
 import { dashboardStats } from "../data/dummyData";
+import { Link } from "react-router-dom";
 
 import {
-Map,
-Factory,
-Activity,
-Landmark
+  Map,
+  Factory,
+  Activity,
+  Landmark
 } from "lucide-react";
 
-function Dashboard(){
+function Dashboard() {
 
-const icons=[
-<Map/>,
-<Factory/>,
-<Landmark/>,
-<Activity/>
-];
+  const icons = [
+    <Map />,
+    <Factory />,
+    <Landmark />,
+    <Activity />
+  ];
 
-return(
+  return (
 
-<div className="space-y-10">
+    <div className="space-y-10">
 
-{/* Header */}
+      {/* Header */}
 
-<div className="bg-[#071A2D] rounded-3xl text-white p-6 lg:p-10">
+      <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 lg:p-10 shadow-md">
 
-<p className="uppercase tracking-widest text-green-400">
+        <p className="uppercase tracking-widest text-green-400">
 
-Government Command Center
+          Government Command Center
 
-</p>
+        </p>
 
-<h1 className="text-3xl lg:text-5xl font-bold mt-3">
+        <h1 className="text-3xl lg:text-5xl font-bold mt-3">
 
-National Land Intelligence Dashboard
+          National Land Intelligence Dashboard
 
-</h1>
+        </h1>
 
-<p className="text-gray-300 mt-4 text-lg">
+        <p className="text-slate-400 mt-4 text-lg">
 
-Real-time GIS monitoring, AI prediction,
-land records management and government analytics platform.
+          Real-time GIS monitoring, AI prediction,
+          land records management and government analytics platform.
 
-</p>
+        </p>
 
-<div className="flex flex-wrap gap-3 lg:gap-4 mt-8">
+        <div className="flex flex-wrap gap-3 lg:gap-4 mt-8">
 
-<div className="bg-green-600 px-5 py-3 rounded-xl">
+          <div className="bg-green-600 px-5 py-3 rounded-xl">
 
-System Online
+            System Online
 
-</div>
+          </div>
 
-<div className="bg-white/10 px-5 py-3 rounded-xl">
+          <div className="bg-slate-800/80 border border-slate-700 px-5 py-3 rounded-xl text-slate-100">
 
-AI Engine Active
+            AI Engine Active
 
-</div>
+          </div>
 
-<div className="bg-white/10 px-5 py-3 rounded-xl">
+          <div className="bg-slate-800/80 border border-slate-700 px-5 py-3 rounded-xl text-slate-100">
 
-GIS Connected
+            GIS Connected
 
-</div>
+          </div>
 
-</div>
+        </div>
 
-</div>
+      </div>
 
-{/* Statistics */}
+      {/* Statistics */}
 
-<section>
+      <section>
 
-<div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8">
 
-<div>
+          <div>
 
-<h2 className="text-3xl font-bold text-[#071A2D]">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-100">
 
-Platform Statistics
+              Platform Statistics
 
-</h2>
+            </h2>
 
-<p className="text-gray-500">
+            <p className="text-slate-400">
 
-Live Government Intelligence Metrics
+              Live Government Intelligence Metrics
 
-</p>
+            </p>
 
-</div>
+          </div>
 
-</div>
+        </div>
 
-<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
-{
+          {
 
-dashboardStats.map((item,index)=>(
+            dashboardStats.map((item, index) => (
 
-<StatCard
+              <StatCard
 
-key={index}
+                key={index}
 
-title={item.title}
+                title={item.title}
 
-value={item.value}
+                value={item.value}
 
-percentage={item.percentage}
+                percentage={item.percentage}
 
-icon={icons[index]}
+                icon={icons[index]}
 
-/>
+              />
 
-))
+            ))
 
-}
+          }
 
-</div>
+        </div>
 
-</section>
+      </section>
 
-{/* GIS */}
+      {/* GIS */}
 
-<section>
+      <section>
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-100">
+            GIS Intelligence Center
+          </h2>
+          <Link to="/gis" className="bg-[#0F2942] hover:bg-blue-900 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center transition-colors shadow-sm">
+            Launch Full Cadastral Intelligence View ➔
+          </Link>
+        </div>
 
-GIS Intelligence Center
+        <div className="bg-slate-900 border border-slate-800 text-slate-100 rounded-xl shadow-md p-4 sm:p-6">
 
-</h2>
+          <MapView />
 
-<div className="bg-white rounded-3xl border shadow-lg p-6">
+        </div>
 
-<MapView/>
+      </section>
 
-</div>
+      {/* Analytics */}
 
-</section>
+      <section>
 
-{/* Analytics */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
 
-<section>
+          National Analytics
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        </h2>
 
-National Analytics
+        <AnalyticsChart />
 
-</h2>
+      </section>
 
-<AnalyticsChart/>
+      {/* AI Prediction */}
 
-</section>
+      <section>
 
-{/* AI Prediction */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
 
-<section>
+          Artificial Intelligence
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        </h2>
 
-Artificial Intelligence
+        <AIPrediction />
 
-</h2>
+      </section>
 
-<AIPrediction/>
+      {/* AI Assistant */}
 
-</section>
+      <section>
 
-{/* AI Assistant */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
 
-<section>
+          AI Assistant
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        </h2>
 
-AI Assistant
+        <AIAssistant />
 
-</h2>
+      </section>
 
-<AIAssistant/>
+      {/* Alerts */}
 
-</section>
+      <section>
 
-{/* Alerts */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
 
-<section>
+          Monitoring & Alerts
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        </h2>
 
-Monitoring & Alerts
+        <AlertPanel />
 
-</h2>
+      </section>
 
-<AlertPanel/>
+      {/* Land Records */}
 
-</section>
+      <section>
 
-{/* Land Records */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
 
-<section>
+          Government Land Records
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        </h2>
 
-Government Land Records
+        <LandRecords />
 
-</h2>
+      </section>
 
-<LandRecords/>
+      {/* Reports */}
 
-</section>
+      <section>
 
-{/* Reports */}
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
 
-<section>
+          Government Reports
 
-<h2 className="text-3xl font-bold text-[#071A2D] mb-6">
+        </h2>
 
-Government Reports
+        <Reports />
 
-</h2>
+      </section>
 
-<Reports/>
+    </div>
 
-</section>
-
-</div>
-
-)
+  )
 
 }
 

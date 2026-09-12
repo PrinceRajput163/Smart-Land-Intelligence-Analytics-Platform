@@ -223,7 +223,7 @@ Official Support
 
 <hr className="border-white/10 my-12"/>
 
-<div className="flex justify-between items-center">
+<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 
 <div>
 

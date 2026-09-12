@@ -1,40 +1,33 @@
-import MapView from "../components/MapView";
+import MapView from "../components/gis/MapView";
 
 
-function GISPage(){
+function GISPage() {
 
-return(
+  return (
 
-<div>
+    <div>
 
+      <h1 className="text-2xl sm:text-4xl font-bold">
 
-<h1 className="text-4xl font-bold">
+        GIS Intelligence Map
 
-GIS Intelligence Map
+      </h1>
 
-</h1>
+      <p className="text-gray-600 mt-3">
 
+        Advanced GLIS Geospatial Monitoring System
 
-<p className="text-gray-600 mt-3">
+      </p>
 
-Advanced GLIS Geospatial Monitoring System
+      <div className="bg-white rounded-xl shadow p-4 sm:p-6 mt-6 sm:mt-10">
 
-</p>
+        <MapView />
 
+      </div>
 
+    </div>
 
-<div className="bg-white rounded-xl shadow p-6 mt-10">
-
-
-<MapView/>
-
-
-</div>
-
-
-</div>
-
-)
+  )
 
 }
 

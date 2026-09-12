@@ -160,7 +160,7 @@ function HeroSection() {
 
             </div>
 
-            <h1 className="text-6xl font-bold leading-tight mt-8">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mt-8">
 
               Smart Land Intelligence
 
@@ -468,7 +468,7 @@ function HeroSection() {
 
         <div className="max-w-7xl mx-auto px-8">
 
-          <div className="grid grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
 
             <div className="rounded-xl shadow border p-6 text-center">
 

@@ -4,8 +4,12 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: Inter, system-ui, sans-serif;
-  background: #f8fafc;
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+    background-color: #020617 !important;
+    color: #f8fafc !important;
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+  }
 }

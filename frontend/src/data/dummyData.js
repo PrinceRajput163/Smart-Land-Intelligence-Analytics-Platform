@@ -90,78 +90,46 @@ risk:"High"
 
 
 export const landRecords = [
-
 {
-id:"GLIS-1001",
-location:"Dhanbad",
-district:"Jharkhand",
-owner:"Government",
-area:"240 Ha",
-category:"Coal Zone",
-risk:"Low",
-status:"Available"
+id:"GLIS-UP-401",
+location:"Jewar",
+district:"Gautam Buddha Nagar",
+owner:"YEIDA",
+area:"140 Ha",
+category:"Industrial Reserve",
+risk:"High",
+status:"Encroachment Alert"
 },
-
-
 {
-id:"GLIS-1002",
-location:"Ranchi",
-district:"Jharkhand",
-owner:"Government",
-area:"180 Ha",
-category:"Industrial",
+id:"GLIS-UP-402",
+location:"Dadri",
+district:"Gautam Buddha Nagar",
+owner:"Revenue Dept",
+area:"85 Ha",
+category:"Vacant Govt Land",
 risk:"Low",
+status:"Verified"
+},
+{
+id:"GLIS-UP-403",
+location:"Dankaur",
+district:"Gautam Buddha Nagar",
+owner:"Gram Sabha",
+area:"210 Ha",
+category:"Agricultural Buffer",
+risk:"Medium",
 status:"Planning"
 },
-
-
 {
-id:"GLIS-1003",
-location:"Korba",
-district:"Chhattisgarh",
-owner:"Government",
-area:"350 Ha",
-category:"Mining",
-risk:"Medium",
-status:"Active"
-},
-
-
-{
-id:"GLIS-1004",
-location:"Singrauli",
-district:"Madhya Pradesh",
-owner:"Private",
-area:"120 Ha",
-category:"Forest",
-risk:"High",
-status:"Restricted"
-},
-
-
-{
-id:"GLIS-1005",
-location:"Bokaro",
-district:"Jharkhand",
-owner:"Government",
-area:"420 Ha",
-category:"Development",
+id:"GLIS-UP-404",
+location:"Greater Noida West",
+district:"Gautam Buddha Nagar",
+owner:"GNIDA",
+area:"320 Ha",
+category:"Commercial Utility",
 risk:"Low",
-status:"Available"
-},
-
-
-{
-id:"GLIS-1006",
-location:"Talcher",
-district:"Odisha",
-owner:"Government",
-area:"290 Ha",
-category:"Coal",
-risk:"Medium",
-status:"Monitoring"
+status:"Prime"
 }
-
 ];
 
 
