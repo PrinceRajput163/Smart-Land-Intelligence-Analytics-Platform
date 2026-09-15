@@ -27,11 +27,14 @@ export default function SettingsPage() {
             <User size={40} className="text-emerald-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-100">
-              District Magistrate / Nodal Officer, Gautam Buddha Nagar
-            </h2>
-            <p className="text-slate-400 text-sm mt-1">
-              Department of Revenue & Urban Development, Govt. of Uttar Pradesh
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">
+              Administrator
+            </h1>
+            <p className="text-slate-400 mt-2">
+              Ministry of Coal, Government of India
+            </p>
+            <p className="text-sm font-semibold text-emerald-400 mt-1">
+              Role: System Administrator
             </p>
             <p className="text-emerald-400 text-xs font-mono mt-2 bg-emerald-900/30 px-2 py-1 rounded inline-block">
               GLIS Central Gateway (UP-DILRMP Node 04)

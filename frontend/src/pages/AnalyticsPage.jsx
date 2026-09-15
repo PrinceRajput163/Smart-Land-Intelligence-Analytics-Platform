@@ -7,7 +7,7 @@ function AnalyticsPage() {
 
     <div className="mt-6 sm:mt-10">
 
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-slate-100">
 
         Land Intelligence Analytics
 

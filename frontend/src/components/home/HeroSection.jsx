@@ -38,7 +38,7 @@ function HeroSection() {
 
             <p className="text-gray-300 mt-2">
 
-              Ministry of Land Resources (Demo)
+              Ministry of Coal (Demonstration Prototype)
 
             </p>
 
@@ -210,7 +210,7 @@ function HeroSection() {
 
                 <p className="text-gray-400">
 
-                  Coverage
+                  Target Coverage
 
                 </p>
 
@@ -226,7 +226,7 @@ function HeroSection() {
 
                 <p className="text-gray-400">
 
-                  Districts
+                  Target Districts
 
                 </p>
 
@@ -242,7 +242,7 @@ function HeroSection() {
 
                 <p className="text-gray-400">
 
-                  Land Records
+                  Demo Records
 
                 </p>
 
@@ -258,7 +258,7 @@ function HeroSection() {
 
                 <p className="text-gray-400">
 
-                  AI Accuracy
+                  Target AI Accuracy
 
                 </p>
 

@@ -19,13 +19,16 @@ export default function AIPredictionPage() {
       {/* Header */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
-          <p className="uppercase tracking-widest text-emerald-400 font-semibold text-xs mb-1">
-            GeoAI Decision Support Model
+          <p className="uppercase tracking-widest text-emerald-400 font-semibold mb-2 text-sm sm:text-base">
+            Demonstration Prototype
           </p>
-          <h2 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
-            <Brain className="text-purple-400" />
-            GeoAI-XGBoost Expansion Regressor v2.4
-          </h2>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-100">
+            ML Suitability Engine
+          </h1>
+          <p className="text-slate-400 mt-3 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Predictive modeling interface for identifying optimal land use cases. 
+            (Note: Data shown is for UI demonstration purposes only.)
+          </p>
           <div className="mt-3 space-y-1 text-sm text-slate-400">
             <p><strong className="text-slate-300">Training Data:</strong> Multi-Temporal Sentinel-2 (2020-2026) + OSM Infrastructure Layers</p>
             <p><strong className="text-slate-300">Test Region:</strong> Gautam Buddha Nagar (Jewar / YEIDA Corridor)</p>

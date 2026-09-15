@@ -33,11 +33,11 @@ function Navbar() {
         <div>
 
           <p className="text-xs sm:text-sm uppercase tracking-widest text-[#FF9933] font-semibold">
-            Land Intelligence & Decision Support System (GLIS-DSS)
+            Government Land Information System — Analytics Platform
           </p>
 
           <h2 className="font-bold text-sm sm:text-base text-gray-200">
-            Department of Revenue & Urban Development, Govt. of Uttar Pradesh
+            Ministry of Coal, Government of India · SIH1318
           </h2>
 
         </div>
@@ -84,7 +84,7 @@ function Navbar() {
 
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-100 mt-1 sm:mt-2">
 
-            National Command Center
+            GLIS Analytics Command Center
 
           </h1>
 

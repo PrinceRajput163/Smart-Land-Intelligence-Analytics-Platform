@@ -1,11 +1,7 @@
 import StatCard from "../components/common/StatCard";
 import MapView from "../components/gis/MapView";
 import AnalyticsChart from "../components/analytics/AnalyticsChart";
-import AIPrediction from "../components/ai/AIPrediction";
-import AIAssistant from "../components/ai/AIAssistant";
 import AlertPanel from "../components/dashboard/AlertPanel";
-import LandRecords from "../components/land-records/LandRecords";
-import Reports from "../components/reports/Reports";
 
 import { dashboardStats } from "../data/dummyData";
 import { Link } from "react-router-dom";
@@ -150,45 +146,20 @@ function Dashboard() {
 
       </section>
 
-      {/* Analytics */}
+      {/* Analytics Summary */}
 
       <section>
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
-
-          National Analytics
-
-        </h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-100">
+            National Analytics
+          </h2>
+          <Link to="/analytics" className="bg-[#0F2942] hover:bg-blue-900 text-white text-sm font-semibold py-2 px-4 rounded-lg flex items-center transition-colors shadow-sm">
+            View Detailed Reports ➔
+          </Link>
+        </div>
 
         <AnalyticsChart />
-
-      </section>
-
-      {/* AI Prediction */}
-
-      <section>
-
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
-
-          Artificial Intelligence
-
-        </h2>
-
-        <AIPrediction />
-
-      </section>
-
-      {/* AI Assistant */}
-
-      <section>
-
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
-
-          AI Assistant
-
-        </h2>
-
-        <AIAssistant />
 
       </section>
 
@@ -203,34 +174,6 @@ function Dashboard() {
         </h2>
 
         <AlertPanel />
-
-      </section>
-
-      {/* Land Records */}
-
-      <section>
-
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
-
-          Government Land Records
-
-        </h2>
-
-        <LandRecords />
-
-      </section>
-
-      {/* Reports */}
-
-      <section>
-
-        <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-6">
-
-          Government Reports
-
-        </h2>
-
-        <Reports />
 
       </section>
 

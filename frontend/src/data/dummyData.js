@@ -213,34 +213,26 @@ result:"Highly Suitable For Development"
 
 
 export const reportsData = [
-
-{
-title:"Land Utilization Report",
-date:"12 July 2026",
-status:"Completed"
-},
-
-
-{
-title:"Mining Impact Report",
-date:"10 July 2026",
-status:"Completed"
-},
-
-
-{
-title:"Environmental Analysis Report",
-date:"08 July 2026",
-status:"Processing"
-},
-
-
-{
-title:"Development Planning Report",
-date:"05 July 2026",
-status:"Completed"
-}
-
+  {
+    title: "National Land Suitability Assessment",
+    date: "July 2026",
+    status: "Completed",
+  },
+  {
+    title: "Environmental Hydrology Clearances",
+    date: "August 2026",
+    status: "Pending Review",
+  },
+  {
+    title: "High-Risk Encroachment Summary",
+    date: "September 2026",
+    status: "Completed",
+  },
+  {
+    title: "Quarterly Mining Zone Expansion Report",
+    date: "October 2026",
+    status: "Active",
+  },
 ];
 
 

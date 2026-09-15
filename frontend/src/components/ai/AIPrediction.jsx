@@ -102,7 +102,7 @@ className="bg-slate-800 p-5 rounded-2xl"
 
 <p className="text-slate-400 mt-5">
 
-Model Accuracy
+Target Model Accuracy (Demo)
 
 </p>
 
@@ -120,7 +120,7 @@ Model Accuracy
 
 <p className="text-slate-400 mt-5">
 
-Confidence Score
+Demo Confidence Score
 
 </p>
 
@@ -138,7 +138,7 @@ Confidence Score
 
 <p className="text-slate-400 mt-5">
 
-Risk Level
+Sample Risk Level
 
 </p>
 
@@ -162,7 +162,7 @@ LOW
 
 <h2 className="text-3xl font-bold text-green-700">
 
-Prediction Result
+Sample Prediction Result
 
 </h2>
 
@@ -176,7 +176,7 @@ Highly Suitable For Development
 
 <p className="text-slate-300 mt-5 leading-8">
 
-The selected land parcel has high infrastructure potential,
+(Demonstration Data) The selected land parcel has high infrastructure potential,
 low environmental risk,
 verified government ownership,
 and strong AI confidence for future development.

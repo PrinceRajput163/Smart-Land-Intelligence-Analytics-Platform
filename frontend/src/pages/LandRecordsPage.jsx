@@ -7,13 +7,13 @@ function LandRecordsPage() {
 
     <div>
 
-      <h1 className="text-2xl sm:text-4xl font-bold">
+      <h1 className="text-2xl sm:text-4xl font-bold text-slate-100">
 
         GLIS Land Records
 
       </h1>
 
-      <p className="text-gray-600 mt-3">
+      <p className="text-slate-400 mt-3">
 
         Centralized Government Land Information System
 
