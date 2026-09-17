@@ -54,40 +54,52 @@ def get_parcels():
         # Fallback empty structure if user hasn't run fetch_authentic_data.py
         return {"type": "FeatureCollection", "features": []}
 
-@app.get("/api/up/districts")
-def get_up_districts():
-    """Returns GeoJSON FeatureCollection of all 75 UP districts."""
-    try:
-        data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "real_up_75_districts.geojson")
-        with open(data_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        return {"error": "Districts data not found."}
+@app.get("/api/states/{state_id}/districts")
+def get_state_districts(state_id: str):
+    """Returns GeoJSON FeatureCollection of districts for a given state."""
+    # We only have authentic data for Uttar Pradesh
+    if state_id.lower().replace(" ", "-") == "uttar-pradesh":
+        try:
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "real_up_75_districts.geojson")
+            with open(data_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            return {"error": "Data unavailable"}
+    
+    return {"error": "Data unavailable"}
 
-@app.get("/api/up/districts/{district_name}")
-def get_district_info(district_name: str):
-    """Returns district-specific dossier."""
-    districts = get_up_districts()
-    if "features" in districts:
-        for f in districts["features"]:
-            if f.get("properties", {}).get("DISTRICT", "").lower() == district_name.lower().replace("-", " "):
-                return f
-    return {"error": "District not found"}
+@app.get("/api/districts/{district_id}/boundary")
+def get_district_boundary(district_id: str):
+    """Returns real district boundary geometry."""
+    if district_id.lower().replace(" ", "-") == "gautam-buddha-nagar":
+        try:
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "real_gbn_boundary.geojson")
+            with open(data_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            return {"error": "Data unavailable"}
+    
+    return {"error": "Data unavailable"}
 
-@app.get("/api/up/districts/gautam-buddha-nagar/parcels")
-def get_gautam_buddha_nagar_parcels():
-    """Returns granular cadastral plots (real OSM landuse boundaries)."""
-    return get_parcels()
+@app.get("/api/districts/{district_id}/parcels")
+def get_district_parcels(district_id: str):
+    """Returns granular cadastral plots."""
+    if district_id.lower().replace(" ", "-") == "gautam-buddha-nagar":
+        return get_parcels()
+    return {"error": "Data unavailable"}
 
-@app.get("/api/up/districts/gautam-buddha-nagar/highways")
-def get_gautam_buddha_nagar_highways():
-    """Returns real highway and motorway geometries."""
-    try:
-        data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "real_gbn_highways.geojson")
-        with open(data_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        return {"type": "FeatureCollection", "features": []}
+@app.get("/api/districts/{district_id}/highways")
+def get_district_highways(district_id: str):
+    """Returns real highway geometries."""
+    if district_id.lower().replace(" ", "-") == "gautam-buddha-nagar":
+        try:
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "real_gbn_highways.geojson")
+            with open(data_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            return {"error": "Data unavailable"}
+            
+    return {"error": "Data unavailable"}
 
 @app.get("/api/parcels/{parcel_id}/intelligence")
 def get_intelligence(parcel_id: str):

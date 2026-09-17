@@ -21,10 +21,10 @@ import DecisionSupportCard from "./DecisionSupportCard";
 
 // ─── View Hierarchy ─────────────────────────────────────────────
 const VIEWS = {
-  NATIONAL: { center: [78.9629, 22.5937], zoom: 4.5, name: "India" },
-  STATE_UP: { center: [80.9462, 26.8467], zoom: 6.5, name: "Uttar Pradesh" },
-  DISTRICT_GBN: { center: [77.55, 28.35], zoom: 10.5, name: "Gautam Buddha Nagar" }
+  NATIONAL: { center: [78.9629, 22.5937], zoom: 4.5, name: "India" }
 };
+
+const formatName = (name) => name.toLowerCase().replace(/ /g, "-");
 
 // ─── India Sovereign Bounds [sw, ne] in [lng, lat] ──────────────
 const INDIA_BOUNDS = [
@@ -111,7 +111,10 @@ export default function MapView({ className = "" }) {
   const popupRef = useRef(null);
   const tooltipRef = useRef(null);
 
-  const [viewLevel, setViewLevel] = useState("NATIONAL");
+  const [viewLevel, setViewLevel] = useState("NATIONAL"); // "NATIONAL" | "STATE" | "DISTRICT"
+  const [activeState, setActiveState] = useState(null); // { name: "Uttar Pradesh", center: [lng, lat] }
+  const [activeDistrict, setActiveDistrict] = useState(null); // { name: "Gautam Buddha Nagar", center: [lng, lat] }
+  
   const [activeTile, setActiveTile] = useState("dark");
   const [activeYear, setActiveYear] = useState(2026);
   const [selectedCadastral, setSelectedCadastral] = useState(null);
@@ -120,6 +123,7 @@ export default function MapView({ className = "" }) {
   const [layerVisibility, setLayerVisibility] = useState(
     GLIS_LAYERS.reduce((acc, l) => ({ ...acc, [l.id]: l.defaultOn }), {})
   );
+  const [dataUnavailableMessage, setDataUnavailableMessage] = useState(null);
 
   // ─── Initialize MapLibre ───────────────────────────────────────
   useEffect(() => {
@@ -167,12 +171,12 @@ export default function MapView({ className = "" }) {
     map.once("style.load", () => {
       loadIndiaMask(map);
       if (viewLevel === "NATIONAL") loadNationalLayer(map);
-      if (viewLevel === "STATE_UP") {
+      if (viewLevel === "STATE" && activeState) {
         loadNationalLayer(map);
-        loadUPDistricts(map);
+        loadStateDistricts(map, activeState.name);
       }
-      if (viewLevel === "DISTRICT_GBN") {
-        loadGBNLayer(map);
+      if (viewLevel === "DISTRICT" && activeDistrict) {
+        loadDistrictAssets(map, activeDistrict.name);
       }
     });
   }, [activeTile]);
@@ -181,11 +185,20 @@ export default function MapView({ className = "" }) {
   useEffect(() => {
     if (!mapRef.current || !mapLoaded) return;
     const map = mapRef.current;
-    const view = VIEWS[viewLevel];
+    
+    let center = VIEWS.NATIONAL.center;
+    let zoom = VIEWS.NATIONAL.zoom;
+    if (viewLevel === "STATE" && activeState) {
+      center = activeState.center;
+      zoom = 6.5;
+    } else if (viewLevel === "DISTRICT" && activeDistrict) {
+      center = activeDistrict.center;
+      zoom = 10.5;
+    }
 
     map.flyTo({
-      center: view.center,
-      zoom: view.zoom,
+      center,
+      zoom,
       duration: 1500,
       essential: true
     });
@@ -193,27 +206,30 @@ export default function MapView({ className = "" }) {
     // Clean up old layers before adding new ones
     removeLayerSafe(map, "india-states-fill");
     removeLayerSafe(map, "india-states-line");
-    removeLayerSafe(map, "up-districts-fill");
-    removeLayerSafe(map, "up-districts-line");
-    removeLayerSafe(map, "up-districts-highlight");
-    removeLayerSafe(map, "gbn-boundary-line");
-    removeLayerSafe(map, "gbn-boundary-fill");
-    removeLayerSafe(map, "gbn-highways");
-    removeLayerSafe(map, "gbn-parcels-fill");
-    removeLayerSafe(map, "gbn-parcels-line");
+    removeLayerSafe(map, "state-districts-fill");
+    removeLayerSafe(map, "state-districts-line");
+    removeLayerSafe(map, "district-boundary-line");
+    removeLayerSafe(map, "district-boundary-fill");
+    removeLayerSafe(map, "district-highways");
+    removeLayerSafe(map, "district-parcels-fill");
+    removeLayerSafe(map, "district-parcels-line");
     removeSourceSafe(map, "india-states");
-    removeSourceSafe(map, "up-districts");
-    removeSourceSafe(map, "gbn-boundary");
-    removeSourceSafe(map, "gbn-highways");
-    removeSourceSafe(map, "gbn-parcels");
+    removeSourceSafe(map, "state-districts");
+    removeSourceSafe(map, "district-boundary");
+    removeSourceSafe(map, "district-highways");
+    removeSourceSafe(map, "district-parcels");
+    
+    setDataUnavailableMessage(null);
 
     if (viewLevel === "NATIONAL") loadNationalLayer(map);
-    if (viewLevel === "STATE_UP") {
+    if (viewLevel === "STATE" && activeState) {
       loadNationalLayer(map);
-      loadUPDistricts(map);
+      loadStateDistricts(map, activeState.name);
     }
-    if (viewLevel === "DISTRICT_GBN") loadGBNLayer(map);
-  }, [viewLevel, mapLoaded]);
+    if (viewLevel === "DISTRICT" && activeDistrict) {
+      loadDistrictAssets(map, activeDistrict.name);
+    }
+  }, [viewLevel, activeState, activeDistrict, mapLoaded]);
 
   // ─── Helper: Safe Remove ───────────────────────────────────────
   const removeLayerSafe = (map, id) => {
@@ -268,19 +284,13 @@ export default function MapView({ className = "" }) {
         paint: {
           "fill-color": [
             "case",
-            ["any",
-              ["==", ["get", "NAME_1"], "Uttar Pradesh"],
-              ["==", ["get", "ST_NM"], "Uttar Pradesh"]
-            ],
+            ["==", ["coalesce", ["get", "NAME_1"], ["get", "ST_NM"], ""], activeState?.name || ""],
             "#0284c7",
             "#1e293b"
           ],
           "fill-opacity": [
             "case",
-            ["any",
-              ["==", ["get", "NAME_1"], "Uttar Pradesh"],
-              ["==", ["get", "ST_NM"], "Uttar Pradesh"]
-            ],
+            ["==", ["coalesce", ["get", "NAME_1"], ["get", "ST_NM"], ""], activeState?.name || ""],
             0.45,
             0.2
           ]
@@ -294,27 +304,20 @@ export default function MapView({ className = "" }) {
         paint: {
           "line-color": [
             "case",
-            ["any",
-              ["==", ["get", "NAME_1"], "Uttar Pradesh"],
-              ["==", ["get", "ST_NM"], "Uttar Pradesh"]
-            ],
+            ["==", ["coalesce", ["get", "NAME_1"], ["get", "ST_NM"], ""], activeState?.name || ""],
             "#38bdf8",
             "#475569"
           ],
           "line-width": [
             "case",
-            ["any",
-              ["==", ["get", "NAME_1"], "Uttar Pradesh"],
-              ["==", ["get", "ST_NM"], "Uttar Pradesh"]
-            ],
+            ["==", ["coalesce", ["get", "NAME_1"], ["get", "ST_NM"], ""], activeState?.name || ""],
             2.5,
             0.8
           ]
         }
       });
 
-      // Register interaction handlers once per map instance (they are keyed by layer
-      // id and survive layer re-adds, so re-registering would stack duplicates).
+      // Register interaction handlers once per map instance
       if (map.__nationalHandlers) return;
       map.__nationalHandlers = true;
 
@@ -323,7 +326,6 @@ export default function MapView({ className = "" }) {
         map.getCanvas().style.cursor = "pointer";
         const f = e.features[0];
         const name = f.properties.NAME_1 || f.properties.ST_NM || "State";
-        const isUP = name === "Uttar Pradesh";
 
         if (tooltipRef.current) tooltipRef.current.remove();
         tooltipRef.current = new Popup({
@@ -332,7 +334,7 @@ export default function MapView({ className = "" }) {
           className: "glis-tooltip"
         })
           .setLngLat(e.lngLat)
-          .setHTML(`<div class="glis-tt-inner"><strong>${name}</strong>${isUP ? "<br/><span style='color:#38bdf8;'>Click to inspect UP</span>" : ""}</div>`)
+          .setHTML(`<div class="glis-tt-inner"><strong>${name}</strong><br/><span style='color:#38bdf8;'>Click to inspect state</span></div>`)
           .addTo(map);
       });
 
@@ -344,38 +346,41 @@ export default function MapView({ className = "" }) {
       map.on("click", "india-states-fill", (e) => {
         const f = e.features[0];
         const name = f.properties.NAME_1 || f.properties.ST_NM || "";
-        if (name === "Uttar Pradesh") {
-          handleGoState();
-        }
+        handleGoState({ name, center: [e.lngLat.lng, e.lngLat.lat] });
       });
     } catch (e) {
       console.error("Failed to load national layer:", e);
     }
   };
 
-  // ─── Load: UP Districts ────────────────────────────────────────
-  const loadUPDistricts = async (map) => {
+  // ─── Load: State Districts ────────────────────────────────────────
+  const loadStateDistricts = async (map, stateName) => {
     try {
-      if (map.getSource("up-districts")) return;
-      const res = await fetch("/up_districts.geojson");
+      if (map.getSource("state-districts")) return;
+      const res = await fetch(`http://localhost:8000/api/states/${formatName(stateName)}/districts`);
       const data = await res.json();
 
-      map.addSource("up-districts", { type: "geojson", data });
+      if (data.error || !data.features || data.features.length === 0) {
+        setDataUnavailableMessage(`Real district boundaries for ${stateName} are currently unavailable.`);
+        return;
+      }
+
+      map.addSource("state-districts", { type: "geojson", data });
 
       map.addLayer({
-        id: "up-districts-fill",
+        id: "state-districts-fill",
         type: "fill",
-        source: "up-districts",
+        source: "state-districts",
         paint: {
           "fill-color": [
             "case",
-            ["==", ["get", "DISTRICT"], "Gautam Buddha Nagar"],
+            ["==", ["coalesce", ["get", "DISTRICT"], ["get", "NAME_2"], ""], activeDistrict?.name || ""],
             "#f97316",
             "#1e293b"
           ],
           "fill-opacity": [
             "case",
-            ["==", ["get", "DISTRICT"], "Gautam Buddha Nagar"],
+            ["==", ["coalesce", ["get", "DISTRICT"], ["get", "NAME_2"], ""], activeDistrict?.name || ""],
             0.5,
             0.25
           ]
@@ -383,128 +388,115 @@ export default function MapView({ className = "" }) {
       });
 
       map.addLayer({
-        id: "up-districts-line",
+        id: "state-districts-line",
         type: "line",
-        source: "up-districts",
+        source: "state-districts",
         paint: {
           "line-color": [
             "case",
-            ["==", ["get", "DISTRICT"], "Gautam Buddha Nagar"],
+            ["==", ["coalesce", ["get", "DISTRICT"], ["get", "NAME_2"], ""], activeDistrict?.name || ""],
             "#ea580c",
             "#475569"
           ],
           "line-width": [
             "case",
-            ["==", ["get", "DISTRICT"], "Gautam Buddha Nagar"],
+            ["==", ["coalesce", ["get", "DISTRICT"], ["get", "NAME_2"], ""], activeDistrict?.name || ""],
             2.5,
             1
           ]
         }
       });
 
-      // GBN Boundary overlay
-      try {
-        const gbnRes = await fetch("/gbn_boundary.geojson");
-        const gbnData = await gbnRes.json();
-        if (!map.getSource("gbn-boundary")) {
-          map.addSource("gbn-boundary", { type: "geojson", data: gbnData });
-          map.addLayer({
-            id: "gbn-boundary-fill",
-            type: "fill",
-            source: "gbn-boundary",
-            paint: { "fill-color": "#f97316", "fill-opacity": 0.3 }
-          });
-          map.addLayer({
-            id: "gbn-boundary-line",
-            type: "line",
-            source: "gbn-boundary",
-            paint: { "line-color": "#f97316", "line-width": 2.5, "line-dasharray": [4, 3] }
-          });
-        }
-      } catch (_) {}
-
       // Tooltip
-      map.on("mousemove", "up-districts-fill", (e) => {
-        map.getCanvas().style.cursor = "pointer";
-        const f = e.features[0];
-        const d = f.properties.DISTRICT || f.properties.NAME_2 || "District";
-        const isGBN = d === "Gautam Buddha Nagar";
-        const land = f.properties.total_govt_land_ha?.toLocaleString() || "42,800";
-        const alerts = f.properties.active_encroachment_alerts || (isGBN ? 4 : 1);
-        const suit = f.properties.avg_suitability_score || 74;
+      if (!map.__stateHandlers) {
+        map.__stateHandlers = true;
+        map.on("mousemove", "state-districts-fill", (e) => {
+          map.getCanvas().style.cursor = "pointer";
+          const f = e.features[0];
+          const d = f.properties.DISTRICT || f.properties.NAME_2 || "District";
+          // Mock some generic stats just for the tooltip on any district to match old UI feel
+          const land = f.properties.total_govt_land_ha?.toLocaleString() || "42,800";
+          const suit = f.properties.avg_suitability_score || 74;
 
-        if (tooltipRef.current) tooltipRef.current.remove();
-        tooltipRef.current = new Popup({
-          closeButton: false, closeOnClick: false, className: "glis-tooltip"
-        })
-          .setLngLat(e.lngLat)
-          .setHTML(`
-            <div class="glis-tt-inner">
-              <strong style="color:${isGBN ? '#f97316' : '#38bdf8'}">${d}</strong><br/>
-              <b>Govt Land:</b> ${land} Ha<br/>
-              <b>Alerts:</b> ${alerts} · <b>Suitability:</b> ${suit}/100
-              ${isGBN ? "<br/><span style='color:#f97316'>Click to enter cadastral view</span>" : ""}
-            </div>`)
-          .addTo(map);
-      });
+          if (tooltipRef.current) tooltipRef.current.remove();
+          tooltipRef.current = new Popup({
+            closeButton: false, closeOnClick: false, className: "glis-tooltip"
+          })
+            .setLngLat(e.lngLat)
+            .setHTML(`
+              <div class="glis-tt-inner">
+                <strong style="color:#f97316">${d}</strong><br/>
+                <b>Govt Land:</b> ${land} Ha<br/>
+                <b>Avg Suitability:</b> ${suit}/100
+                <br/><span style='color:#f97316'>Click to enter cadastral view</span>
+              </div>`)
+            .addTo(map);
+        });
 
-      map.on("mouseleave", "up-districts-fill", () => {
-        map.getCanvas().style.cursor = "";
-        if (tooltipRef.current) { tooltipRef.current.remove(); tooltipRef.current = null; }
-      });
+        map.on("mouseleave", "state-districts-fill", () => {
+          map.getCanvas().style.cursor = "";
+          if (tooltipRef.current) { tooltipRef.current.remove(); tooltipRef.current = null; }
+        });
 
-      map.on("click", "up-districts-fill", (e) => {
-        const f = e.features[0];
-        const d = f.properties.DISTRICT || f.properties.NAME_2 || "";
-        if (d === "Gautam Buddha Nagar") {
-          handleGoDistrict();
-        }
-      });
+        map.on("click", "state-districts-fill", (e) => {
+          const f = e.features[0];
+          const d = f.properties.DISTRICT || f.properties.NAME_2 || "";
+          handleGoDistrict({ name: d, center: [e.lngLat.lng, e.lngLat.lat] });
+        });
+      }
     } catch (e) {
-      console.error("Failed to load UP districts:", e);
+      console.error("Failed to load state districts:", e);
+      setDataUnavailableMessage(`Real district boundaries for ${stateName} are currently unavailable.`);
     }
   };
 
-  // ─── Load: GBN Cadastral ───────────────────────────────────────
-  const loadGBNLayer = async (map) => {
-    // GBN boundary outline at district level
+  // ─── Load: District Cadastral ───────────────────────────────────────
+  const loadDistrictAssets = async (map, districtName) => {
+    let hasData = false;
+    
+    // Boundary overlay
     try {
-      const gbnRes = await fetch("/gbn_boundary.geojson");
-      const gbnData = await gbnRes.json();
-      if (!map.getSource("gbn-boundary")) {
-        map.addSource("gbn-boundary", { type: "geojson", data: gbnData });
-        map.addLayer({
-          id: "gbn-boundary-fill",
-          type: "fill",
-          source: "gbn-boundary",
-          paint: { "fill-color": "#f97316", "fill-opacity": 0.04 }
-        });
-        map.addLayer({
-          id: "gbn-boundary-line",
-          type: "line",
-          source: "gbn-boundary",
-          paint: { "line-color": "#f97316", "line-width": 2, "line-dasharray": [4, 3] }
-        });
+      const bndRes = await fetch(`http://localhost:8000/api/districts/${formatName(districtName)}/boundary`);
+      const bndData = await bndRes.json();
+      if (!bndData.error && bndData.features) {
+        if (!map.getSource("district-boundary")) {
+          map.addSource("district-boundary", { type: "geojson", data: bndData });
+          map.addLayer({
+            id: "district-boundary-fill",
+            type: "fill",
+            source: "district-boundary",
+            paint: { "fill-color": "#f97316", "fill-opacity": 0.04 }
+          });
+          map.addLayer({
+            id: "district-boundary-line",
+            type: "line",
+            source: "district-boundary",
+            paint: { "line-color": "#f97316", "line-width": 2, "line-dasharray": [4, 3] }
+          });
+        }
       }
     } catch (_) {}
 
     // Highways from backend
     try {
-      const hwRes = await fetch("http://localhost:8000/api/up/districts/gautam-buddha-nagar/highways");
+      const hwRes = await fetch(`http://localhost:8000/api/districts/${formatName(districtName)}/highways`);
       const hwData = await hwRes.json();
-      if (hwData?.features?.length > 0 && !map.getSource("gbn-highways")) {
-        map.addSource("gbn-highways", { type: "geojson", data: hwData });
-        map.addLayer({
-          id: "gbn-highways",
-          type: "line",
-          source: "gbn-highways",
-          paint: {
-            "line-color": "#f59e0b",
-            "line-width": 3.5,
-            "line-opacity": 0.85,
-            "line-dasharray": [6, 4]
-          }
-        });
+      if (!hwData.error && hwData?.features?.length > 0) {
+        hasData = true;
+        if (!map.getSource("district-highways")) {
+          map.addSource("district-highways", { type: "geojson", data: hwData });
+          map.addLayer({
+            id: "district-highways",
+            type: "line",
+            source: "district-highways",
+            paint: {
+              "line-color": "#f59e0b",
+              "line-width": 3.5,
+              "line-opacity": 0.85,
+              "line-dasharray": [6, 4]
+            }
+          });
+        }
       }
     } catch (_) {
       console.warn("Highway data not available from backend.");
@@ -512,84 +504,107 @@ export default function MapView({ className = "" }) {
 
     // Parcels from backend
     try {
-      const pRes = await fetch("http://localhost:8000/api/up/districts/gautam-buddha-nagar/parcels");
+      const pRes = await fetch(`http://localhost:8000/api/districts/${formatName(districtName)}/parcels`);
       const pData = await pRes.json();
-      if (pData?.features?.length > 0 && !map.getSource("gbn-parcels")) {
-        map.addSource("gbn-parcels", { type: "geojson", data: pData });
+      if (!pData.error && pData?.features?.length > 0) {
+        hasData = true;
+        if (!map.getSource("district-parcels")) {
+          map.addSource("district-parcels", { type: "geojson", data: pData });
 
-        map.addLayer({
-          id: "gbn-parcels-fill",
-          type: "fill",
-          source: "gbn-parcels",
-          paint: {
-            "fill-color": [
-              "case",
-              ["<", ["coalesce", ["get", "suitability_score"], 50], 40], "#ef4444",
-              ["<", ["coalesce", ["get", "suitability_score"], 50], 60], "#f59e0b",
-              "#10b981"
-            ],
-            "fill-opacity": 0.5
-          }
-        });
-
-        map.addLayer({
-          id: "gbn-parcels-line",
-          type: "line",
-          source: "gbn-parcels",
-          paint: {
-            "line-color": "#ffffff",
-            "line-width": 1
-          }
-        });
-
-        // Click → select parcel → open DecisionSupportCard
-        map.on("click", "gbn-parcels-fill", async (e) => {
-          const feature = e.features[0];
-          setSelectedCadastral({ properties: feature.properties, geometry: feature.geometry, type: "Feature" });
-
-          try {
-            const res = await fetch(`http://localhost:8000/api/parcels/${feature.properties.parcel_id}/intelligence`);
-            if (res.ok) {
-              const intelligence = await res.json();
-              // Merge intelligence fields flat onto properties so DecisionSupportCard
-              // reads suitability_score / risk_score / ml_growth_prob / temporal_delta /
-              // shap_drivers / official_recommendation directly.
-              setSelectedCadastral({
-                type: "Feature",
-                properties: { ...feature.properties, ...intelligence },
-                geometry: feature.geometry
-              });
+          map.addLayer({
+            id: "district-parcels-fill",
+            type: "fill",
+            source: "district-parcels",
+            paint: {
+              "fill-color": [
+                "case",
+                ["<", ["coalesce", ["get", "suitability_score"], 50], 40], "#ef4444",
+                ["<", ["coalesce", ["get", "suitability_score"], 50], 60], "#f59e0b",
+                "#10b981"
+              ],
+              "fill-opacity": 0.5
             }
-          } catch (_) {}
-        });
+          });
 
-        map.on("mousemove", "gbn-parcels-fill", () => {
-          map.getCanvas().style.cursor = "pointer";
-        });
-        map.on("mouseleave", "gbn-parcels-fill", () => {
-          map.getCanvas().style.cursor = "";
-        });
+          map.addLayer({
+            id: "district-parcels-line",
+            type: "line",
+            source: "district-parcels",
+            paint: {
+              "line-color": "#ffffff",
+              "line-width": 1
+            }
+          });
+
+          // Click → select parcel → open DecisionSupportCard
+          if (!map.__districtHandlers) {
+            map.__districtHandlers = true;
+            map.on("click", "district-parcels-fill", async (e) => {
+              const feature = e.features[0];
+              setSelectedCadastral({ properties: feature.properties, geometry: feature.geometry, type: "Feature" });
+
+              try {
+                const res = await fetch(`http://localhost:8000/api/parcels/${feature.properties.parcel_id}/intelligence`);
+                if (res.ok) {
+                  const intelligence = await res.json();
+                  // Merge intelligence fields flat onto properties so DecisionSupportCard
+                  // reads suitability_score / risk_score / ml_growth_prob / temporal_delta /
+                  // shap_drivers / official_recommendation directly.
+                  setSelectedCadastral({
+                    type: "Feature",
+                    properties: { ...feature.properties, ...intelligence },
+                    geometry: feature.geometry
+                  });
+                }
+              } catch (_) {}
+            });
+
+            map.on("mousemove", "district-parcels-fill", () => {
+              map.getCanvas().style.cursor = "pointer";
+            });
+            map.on("mouseleave", "district-parcels-fill", () => {
+              map.getCanvas().style.cursor = "";
+            });
+          }
+        }
       }
     } catch (_) {
       console.warn("Cadastral parcels not available from backend.");
+    }
+
+    if (!hasData) {
+      setDataUnavailableMessage(`Real cadastral and spatial assets for ${districtName} are currently unavailable.`);
     }
   };
 
   // ─── Navigation Handlers ───────────────────────────────────────
   const handleGoNational = useCallback(() => {
     setViewLevel("NATIONAL");
+    setActiveState(null);
+    setActiveDistrict(null);
     setSelectedCadastral(null);
     if (popupRef.current) { popupRef.current.remove(); popupRef.current = null; }
   }, []);
 
-  const handleGoState = useCallback(() => {
-    setViewLevel("STATE_UP");
+  const handleGoState = useCallback((stateObj = null) => {
+    if (stateObj) {
+      setActiveState(stateObj);
+      setViewLevel("STATE");
+    } else {
+      setViewLevel("STATE");
+    }
+    setActiveDistrict(null);
     setSelectedCadastral(null);
     if (popupRef.current) { popupRef.current.remove(); popupRef.current = null; }
   }, []);
 
-  const handleGoDistrict = useCallback(() => {
-    setViewLevel("DISTRICT_GBN");
+  const handleGoDistrict = useCallback((districtObj = null) => {
+    if (districtObj) {
+      setActiveDistrict(districtObj);
+      setViewLevel("DISTRICT");
+    } else {
+      setViewLevel("DISTRICT");
+    }
     if (popupRef.current) { popupRef.current.remove(); popupRef.current = null; }
   }, []);
 
@@ -608,18 +623,18 @@ export default function MapView({ className = "" }) {
           <button onClick={handleGoNational} className="hover:text-sky-400 flex items-center transition-colors font-semibold">
             <Home className="w-3.5 h-3.5 mr-1 text-slate-400" /> India
           </button>
-          {(viewLevel === "STATE_UP" || viewLevel === "DISTRICT_GBN") && (
+          {(viewLevel === "STATE" || viewLevel === "DISTRICT") && activeState && (
             <>
               <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-              <button onClick={handleGoState} className="hover:text-sky-400 transition-colors font-semibold">
-                Uttar Pradesh
+              <button onClick={() => handleGoState(activeState)} className="hover:text-sky-400 transition-colors font-semibold">
+                {activeState.name}
               </button>
             </>
           )}
-          {viewLevel === "DISTRICT_GBN" && (
+          {viewLevel === "DISTRICT" && activeDistrict && (
             <>
               <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-              <span className="text-amber-400 font-bold">Gautam Buddha Nagar</span>
+              <span className="text-amber-400 font-bold">{activeDistrict.name}</span>
             </>
           )}
         </div>
@@ -693,7 +708,7 @@ export default function MapView({ className = "" }) {
       </div>
 
       {/* ── Bottom Center: Temporal Slider ── */}
-      {viewLevel === "DISTRICT_GBN" && (
+      {viewLevel === "DISTRICT" && !dataUnavailableMessage && (
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 pointer-events-auto">
           <div className="bg-slate-900/95 backdrop-blur-md border border-slate-800 rounded-full px-5 py-2 shadow-2xl flex items-center space-x-4">
             <div className="flex items-center space-x-1 text-slate-400 text-xs font-medium">
@@ -723,6 +738,26 @@ export default function MapView({ className = "" }) {
                 2026 Sentinel-2 Delta
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Center: Data Unavailable Overlay ── */}
+      {dataUnavailableMessage && (
+        <div className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+          <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 shadow-2xl rounded-2xl p-6 max-w-md text-center pointer-events-auto animate-in fade-in zoom-in duration-300">
+            <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-slate-100 mb-2">Data Unavailable</h3>
+            <p className="text-slate-400 text-sm">{dataUnavailableMessage}</p>
+            <button 
+              onClick={() => {
+                if (viewLevel === "DISTRICT") handleGoState(activeState);
+                else handleGoNational();
+              }}
+              className="mt-6 bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+            >
+              Go Back
+            </button>
           </div>
         </div>
       )}
